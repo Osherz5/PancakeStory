@@ -8,19 +8,22 @@ var HUD = function (game, hudImage) {
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
 
-    this.game = game;
-    this.nextable = true;
     this.group = game.add.group();
+    this.game = game;
+    this.decisionMode = false;
+    this.currentDecisions = [];
+    this.answerCallback = null;
+    this.nextable = true;
     this.currentTextLine = 0;
     this.allText = "";
     this.shouldCloseDialog = false;
 
-    this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "q", {
+    this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "", {
         font: "20px Arial",
         fill: "#000000",
         align: "left"
     });
-    this.theText = game.add.text(this.TEXT_START_X, this.THE_TEXT_START_Y, "w", {
+    this.theText = game.add.text(this.TEXT_START_X, this.THE_TEXT_START_Y, "", {
         font: "16px Arial",
         fill: "#000000",
         align: "left"
@@ -55,13 +58,17 @@ HUD.prototype.showText = function(newText) {
         this.currentTextLine = this.MAX_LINES_COUNT; 
     }
 
+    if(textLineCount <= this.MAX_LINES_COUNT) {
+        this.shouldCloseDialog = true;
+    }
+
     this._animateTheText(currentText);
 }
 
 // If show text was too big for hud,
 // this function could show the next part of it.
 HUD.prototype.showNextText = function() {
-    if(!this.nextable) {
+    if(!this.nextable || this.decisionMode) {
         return;
     }
     var lines = this.allText.split('\n'); 
@@ -96,6 +103,7 @@ HUD.prototype.showNextText = function() {
 // Show a dialog in the hud
 HUD.prototype.say = function (who, saysWhat) {
     this.closed = false;
+    this.currentDecisions = [];
     this.img.reset(this.BG_X, this.BG_Y)
 
 	this.whoText.setText(who);
@@ -118,13 +126,38 @@ HUD.prototype._animateTheText = function (theText) {
     //  next option available when the repeat is done
     setTimeout(function clearNextable() {
         this.nextable = true;
+        this.decisionMode = true;
     }.bind(this), this.SAY_SPEED_MS * textLength);
+}
+
+HUD.prototype.showDecision = function(question, decisions, answerCallback) {
+    var decisionString = '';
+
+    this.decisionMode = false;
+    this.currentDecisions = decisions;
+    this.answerCallback = answerCallback;
+
+    // Convert the decisions object into a string
+    Object.keys(decisions).forEach(function(decisionIndex) {
+        decisionString += decisionIndex + '. ' + decisions[decisionIndex] + '\n';
+    });
+    this.whoText.setText(question);
+    this.showText(decisionString);
+}
+
+// Used when an answer was chosen
+HUD.prototype.setAnswer = function(answerIndex) {
+    if(this.decisionMode && this.nextable) {
+        this.decisionMode = false;
+        this.answerCallback(answerIndex, this.currentDecisions[answerIndex]);
+        this.shouldCloseDialog = true;
+        this.showNextText();
+    }
 }
 
 HUD.prototype.update = function () {
     if (this.closed) {
-        this.whoText.setText("");
-        this.theText.setText("");
+        this.resetProps();
         if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
         }
@@ -134,4 +167,17 @@ HUD.prototype.update = function () {
 // Close the HUD
 HUD.prototype.close = function () {
     this.closed = true;
+}
+
+// Reset all of the HUD's propertes
+HUD.prototype.resetProps = function() {
+    this.currentDecisions = [];
+    this.decisionMode = false;
+    this.answerCallback = null;
+    this.nextable = true;
+    this.currentTextLine = 0;
+    this.allText = "";
+    this.shouldCloseDialog = false;
+    this.whoText.setText("");
+    this.theText.setText("");
 }
