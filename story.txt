@@ -67,3 +67,9 @@ Will take You to your maiden's fair.
 The player now have to collect wood & monkey fur in order to build a boat.
 He uses the boat to cross the river and reach the dragon's cave, in which happens the endgame.
 
+Player:"Hey! you stole my girlfriend!"
+Dragon:"Oh... Here, take her back."
+Player:"Thanks. Have some pancakes."
+
+END
+
