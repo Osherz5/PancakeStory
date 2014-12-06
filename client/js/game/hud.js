@@ -6,12 +6,15 @@ var HUD = function (game, hudImage) {
     this.THE_TEXT_START_X = 55;
     this.THE_TEXT_START_Y = 452;
     this.SAY_SPEED_MS = 50;
-    this.MAX_LINES_COUNT = 1;
+    this.MAX_LINES_COUNT = 5;
 
     this.game = game;
+    this.nextable = true;
     this.group = game.add.group();
     this.currentTextLine = 0;
     this.allText = "";
+    this.shouldCloseDialog = false;
+
     this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "q", {
         font: "20px Arial",
         fill: "#000000",
@@ -48,33 +51,45 @@ HUD.prototype.showText = function(newText) {
     if(textLineCount > this.MAX_LINES_COUNT) {
         // Remove the overflowing lines
         lines.splice(this.MAX_LINES_COUNT, lines.length);
-        currentText = lines.join("");
+        currentText = lines.join('\n');
         this.currentTextLine = this.MAX_LINES_COUNT; 
     }
 
-    this.theText.setText(currentText);
-    this._animateTheText();
+    this._animateTheText(currentText);
 }
 
 // If show text was too big for hud,
 // this function could show the next part of it.
 HUD.prototype.showNextText = function() {
+    if(!this.nextable) {
+        return;
+    }
     var lines = this.allText.split('\n'); 
     var currentText = "";
+    if(this.shouldCloseDialog) {
+        this.shouldCloseDialog = false;
+        this.close();
+        return;
+    }
 
     if(this.currentTextLine > 0) {
         lines.splice(0, this.currentTextLine);
         if(lines.length > this.MAX_LINES_COUNT) {
             lines.splice(this.MAX_LINES_COUNT, lines.length);
-            currentText = lines.join("");
+            currentText = lines.join('\n');
 
             this.currentTextLine += this.MAX_LINES_COUNT; 
         } else {
-            currentText = lines.join("");
+            currentText = lines.join('\n');
+            this.shouldCloseDialog = true;
         }
     }
-    this.theText.setText(currentText);
-    this._animateTheText();
+    if(currentText === "") {
+        this.shouldCloseDialog = true;
+        currentText = "...";
+    }
+
+    this._animateTheText(currentText);
 }
 
 
@@ -88,8 +103,8 @@ HUD.prototype.say = function (who, saysWhat) {
 }
 
 // Create a nice a nimation effect when saying stuff
-HUD.prototype._animateTheText = function () {
-    var theText = this.theText.text;
+HUD.prototype._animateTheText = function (theText) {
+    this.nextable = false;
     var textLength = theText.length + 1;
     var charIndex = 0;
 
@@ -98,6 +113,12 @@ HUD.prototype._animateTheText = function () {
         var newText = theText.substring(0, ++charIndex);
         this.theText.setText(newText)
     }, this);
+
+    // Hacky shit right here! make the 
+    //  next option available when the repeat is done
+    setTimeout(function clearNextable() {
+        this.nextable = true;
+    }.bind(this), this.SAY_SPEED_MS * textLength);
 }
 
 HUD.prototype.update = function () {
