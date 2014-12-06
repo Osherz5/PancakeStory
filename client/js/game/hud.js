@@ -4,11 +4,11 @@ var HUD = function (game, hudImage) {
     this.TITLE_START_X = 85;
     this.TITLE_START_Y = 420;
     this.CONTENT_START_X = 90;
-    this.CONTENT_START_Y = 442;
+    this.CONTENT_START_Y = 452;
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
-    this.TITLE_SIZE = "20px";
-    this.CONTENT_SIZE = "16px";
+    this.TITLE_SIZE = '20px';
+    this.CONTENT_SIZE = '16px';
 
     // General
     this.group = game.add.group();
@@ -33,13 +33,13 @@ var HUD = function (game, hudImage) {
     this.currentTextLine = 0; // Show text from this offset
 
     this.titleText = game.add.text(this.TITLE_START_X, this.TITLE_START_Y, "", {
-        font: this.TITLE_SIZE + " Arial",
+        font: this.TITLE_SIZE + " VT323",
         fill: "#000000",
         align: "left"
     });
 
     this.contentText = game.add.text(this.CONTENT_START_X, this.CONTENT_START_Y, "", {
-        font: this.CONTENT_SIZE + " Arial",
+        font: this.CONTENT_SIZE + " VT323",
         fill: "#000000",
         align: "left"
     });
@@ -213,7 +213,6 @@ HUD.prototype.setAnswer = function(answerIndex) {
 HUD.prototype.update = function () {
     if (this.shouldBeClosed && this.curentlyDisplaying === true) {
         // Move the hud down
-        this.resetText();
         if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
         } else if (this.curentlyDisplaying) {
@@ -221,7 +220,9 @@ HUD.prototype.update = function () {
             this.curentlyDisplaying = false;
             if(this.queue.length > 0) {
                 var next = this.queue.shift();
-                this.resetText();
+                this.titleText.setText("");
+                this.contentText.setText("");
+                this.currentTextLine = 0;
                 this.allText = "";
                 if(next.type === 'say') {
                     this.say(next.who, next.saysWhat, next.callback);
@@ -236,13 +237,6 @@ HUD.prototype.update = function () {
     }
 }
 
-// Reset only the values
-HUD.prototype.resetText = function() {
-    this.titleText.setText("");
-    this.contentText.setText("");
-    this.currentTextLine = 0;
-    this.allText = "";
-}
 
 // Reset all of the HUD's propertes
 HUD.prototype.resetProps = function() {
@@ -256,5 +250,8 @@ HUD.prototype.resetProps = function() {
     this.answerCallback = null;
     this.sayCallback = null;
     this.nextable = false;
-    this.resetText();
+    this.currentTextLine = 0;
+    this.allText = "";
+    this.titleText.setText("");
+    this.contentText.setText("");
 }
