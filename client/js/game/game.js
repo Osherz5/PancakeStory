@@ -35,17 +35,20 @@ function init() {
 
     hud = new HUD(game, 'hud');
     hud.say('Bob', 'Hi there\nfellow dude.\nYet another dialog.\ntest\n123\n123\n123');
+
     hero = new Hero(game, 10, 10, {r: 255, g: 0, b: 0});
     extra1 = new Persona(game, 30, 30, '#00ff00', true);
 
 
     hero.sprite.body.onBeginContact.add(blockHit, this);
 
+
 }
 
 function update() {
     hero.update();
     hud.update();
+
     if (keyboard.DRAW_SWORD.justUp) {
         isSwordDrawn = true;
     }
