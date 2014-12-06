@@ -9,6 +9,7 @@ Persona = function (game, x, y, color, isStatic) {
 
     PixelEntity.call(this, game, x, y, bitmap);
     this.sprite.body.static = isStatic;
+    this.sprite.body.fixedRotation = true;
 };
 
 Persona.prototype = Object.create(PixelEntity.prototype);
