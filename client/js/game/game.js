@@ -2,7 +2,22 @@ window.app = {};
 
 var hero, game;
 
+
+game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
+    create: init,
+    update: update
+});
+
+
 function init() {
+    window.app.keyboard = {
+        UP: game.input.keyboard.addKey(Phaser.Keyboard.UP),
+        DOWN: game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+        LEFT: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+        RIGHT: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+        INTERACT: game.input.keyboard.addKey(Phaser.Keyboard.I)
+    };
+
     game.time.advancedTiming = true;
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -12,8 +27,3 @@ function init() {
 function update() {
     hero.update();
 }
-
-game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
-    create: init,
-    update: update
-});
