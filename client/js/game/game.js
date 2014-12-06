@@ -18,8 +18,7 @@ function init() {
         LEFT: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
         RIGHT: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
         INTERACT: game.input.keyboard.addKey(Phaser.Keyboard.I),
-        NEXTDIALOG: game.input.keyboard.addKey(Phaser.Keyboard.A),
-        CLOSEDIALOG: game.input.keyboard.addKey(Phaser.Keyboard.X)
+        NEXTDIALOG: game.input.keyboard.addKey(Phaser.Keyboard.A)
     };
 
     // Add tap event ona to show next dialog in hud
