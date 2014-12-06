@@ -1,5 +1,6 @@
 window.app.Hero = function (game, x, y) {
     window.app.Persona.call(this, game, x, y, {r: 255, g: 0, b: 0});
+    this.sprite.body.collideWorldBounds = true;
 };
 
 window.app.Hero.prototype = Object.create(window.app.Persona.prototype);
