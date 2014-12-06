@@ -97,6 +97,5 @@ function blockHit(body) {
         if (isSwordDrawn) {
             extra1.kill();
         }
-        console.log(body.sprite.key);
     }
 }
