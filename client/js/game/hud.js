@@ -4,9 +4,11 @@ var HUD = function (game, hudImage) {
     this.TITLE_START_X = 85;
     this.TITLE_START_Y = 420;
     this.CONTENT_START_X = 90;
-    this.CONTENT_START_Y = 442;
+    this.CONTENT_START_Y = 452;
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
+    this.TITLE_SIZE = '20px';
+    this.CONTENT_SIZE = '16px';
 
     // General
     this.group = game.add.group();
@@ -31,13 +33,13 @@ var HUD = function (game, hudImage) {
     this.currentTextLine = 0; // Show text from this offset
 
     this.titleText = game.add.text(this.TITLE_START_X, this.TITLE_START_Y, "", {
-        font: "20px Arial",
+        font: this.TITLE_SIZE + " VT323",
         fill: "#000000",
         align: "left"
     });
 
     this.contentText = game.add.text(this.CONTENT_START_X, this.CONTENT_START_Y, "", {
-        font: "16px Arial",
+        font: this.CONTENT_SIZE + " VT323",
         fill: "#000000",
         align: "left"
     });
