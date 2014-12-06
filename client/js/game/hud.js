@@ -12,6 +12,8 @@ var HUD = function (game, hudImage) {
     this.group = game.add.group();
     this.currentTextLine = 0;
     this.allText = "";
+    this.shouldCloseDialog = false;
+
     this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "q", {
         font: "20px Arial",
         fill: "#000000",
@@ -52,8 +54,7 @@ HUD.prototype.showText = function(newText) {
         this.currentTextLine = this.MAX_LINES_COUNT; 
     }
 
-    this.theText.setText(currentText);
-    this._animateTheText();
+    this._animateTheText(currentText);
 }
 
 // If show text was too big for hud,
@@ -61,6 +62,11 @@ HUD.prototype.showText = function(newText) {
 HUD.prototype.showNextText = function() {
     var lines = this.allText.split('\n'); 
     var currentText = "";
+    if(this.shouldCloseDialog) {
+        this.close();
+        this.shouldCloseDialog= false;
+        return;
+    }
 
     if(this.currentTextLine > 0) {
         lines.splice(0, this.currentTextLine);
@@ -71,10 +77,10 @@ HUD.prototype.showNextText = function() {
             this.currentTextLine += this.MAX_LINES_COUNT; 
         } else {
             currentText = lines.join("");
+            this.shouldCloseDialog = true;
         }
     }
-    this.theText.setText(currentText);
-    this._animateTheText();
+    this._animateTheText(currentText);
 }
 
 
@@ -88,8 +94,7 @@ HUD.prototype.say = function (who, saysWhat) {
 }
 
 // Create a nice a nimation effect when saying stuff
-HUD.prototype._animateTheText = function () {
-    var theText = this.theText.text;
+HUD.prototype._animateTheText = function (theText) {
     var textLength = theText.length + 1;
     var charIndex = 0;
 
