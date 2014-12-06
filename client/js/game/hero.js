@@ -1,20 +1,20 @@
-window.app.Hero = function (game, x, y) {
-    window.app.Persona.call(this, game, x, y, {r: 255, g: 0, b: 0});
+Hero = function (game, x, y) {
+    Persona.call(this, game, x, y, {r: 255, g: 0, b: 0});
 };
 
-window.app.Hero.prototype = Object.create(window.app.Persona.prototype);
+Hero.prototype = Object.create(Persona.prototype);
 
-window.app.Hero.prototype.update = function () {
-    if (window.app.keyboard.UP.isDown) {
+Hero.prototype.update = function () {
+    if (keyboard.UP.isDown) {
         this.sprite.y -= 1;
     }
-    if (window.app.keyboard.DOWN.isDown) {
+    if (keyboard.DOWN.isDown) {
         this.sprite.y += 1;
     }
-    if (window.app.keyboard.RIGHT.isDown) {
+    if (keyboard.RIGHT.isDown) {
         this.sprite.x += 1;
     }
-    if (window.app.keyboard.LEFT.isDown) {
+    if (keyboard.LEFT.isDown) {
         this.sprite.x -= 1;
     }
 
