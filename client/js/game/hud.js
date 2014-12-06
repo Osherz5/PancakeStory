@@ -1,10 +1,10 @@
 var HUD = function (game, hudImage) {
     this.BG_X = 0;
     this.BG_Y = 375;
-    this.TEXT_START_X = 50;
-    this.TEXT_START_Y = 425;
-    this.THE_TEXT_START_X = 55;
-    this.THE_TEXT_START_Y = 452;
+    this.TITLE_START_X = 85;
+    this.TITLE_START_Y = 420;
+    this.CONTENT_START_X = 90;
+    this.CONTENT_START_Y = 442;
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
 
@@ -30,13 +30,13 @@ var HUD = function (game, hudImage) {
     this.nextable = true; // Checks if the next screen passable
     this.currentTextLine = 0; // Show text from this offset
 
-    this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "", {
+    this.titleText = game.add.text(this.TITLE_START_X, this.TITLE_START_Y, "", {
         font: "20px Arial",
         fill: "#000000",
         align: "left"
     });
 
-    this.theText = game.add.text(this.TEXT_START_X, this.THE_TEXT_START_Y, "", {
+    this.contentText = game.add.text(this.CONTENT_START_X, this.CONTENT_START_Y, "", {
         font: "16px Arial",
         fill: "#000000",
         align: "left"
@@ -48,8 +48,8 @@ var HUD = function (game, hudImage) {
     game.physics.enable(this.img, Phaser.Physics.ARCADE);
 
     this.group.add(this.img);
-    this.group.add(this.whoText);
-    this.group.add(this.theText);
+    this.group.add(this.titleText);
+    this.group.add(this.contentText);
 };
 
 // Show a dialog in the hud
@@ -71,14 +71,14 @@ HUD.prototype.say = function (who, saysWhat, callback) {
     this.img.reset(this.BG_X, this.BG_Y);
     this.sayCallback = callback;
 
-	this.whoText.setText(who);
+	this.titleText.setText(who);
     this.showText(saysWhat);
 }
 
 // Display text in hud 
 HUD.prototype.showText = function(newText) {
     if(newText.indexOf('\n') === -1) {
-        this.theText.setText(newText);
+        this.contentText.setText(newText);
         return;
     }
     var lines = newText.split('\n');    
@@ -155,7 +155,7 @@ HUD.prototype.animateTheText = function (theText) {
     // Repeat each new char every 80ms
     game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
         var newText = theText.substring(0, ++charIndex);
-        this.theText.setText(newText)
+        this.contentText.setText(newText)
     }, this);
 
     // Hacky shit right here! make the 
@@ -194,7 +194,7 @@ HUD.prototype.showDecision = function(question, decisions, answerCallback) {
     this.answerCallback = answerCallback;
     this.img.reset(this.BG_X, this.BG_Y);
 
-    this.whoText.setText(question);
+    this.titleText.setText(question);
     this.showText(this.getDecisionString(decisions));
 }
 
@@ -218,8 +218,8 @@ HUD.prototype.update = function () {
             this.curentlyDisplaying = false;
             if(this.queue.length > 0) {
                 var next = this.queue.shift();
-                this.whoText.setText("");
-                this.theText.setText("");
+                this.titleText.setText("");
+                this.contentText.setText("");
                 this.currentTextLine = 0;
                 this.allText = "";
                 if(next.type === 'say') {
@@ -250,6 +250,6 @@ HUD.prototype.resetProps = function() {
     this.nextable = false;
     this.currentTextLine = 0;
     this.allText = "";
-    this.whoText.setText("");
-    this.theText.setText("");
+    this.titleText.setText("");
+    this.contentText.setText("");
 }
