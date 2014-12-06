@@ -8,26 +8,40 @@ var HUD = function (game, hudImage) {
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
 
+    // General
     this.group = game.add.group();
     this.game = game;
-    this.decisionMode = false;
-    this.currentDecisions = [];
-    this.answerCallback = null;
-    this.nextable = true;
-    this.currentTextLine = 0;
-    this.allText = "";
-    this.shouldCloseDialog = false;
+    this.active = false; // Checks if we can display a new dialog
+    this.shouldBeClosed = true; // Decides if we should close the HUD
+    
+    // Currently saying & saying queue
+    this.sayingMode = false; // Checks if we are in saying mode
+    this.sayingQueue = []; // Holds dialogs that are waiting for the current dialog to end
+    this.sayCallback = null; // Used to tell if the user has read the dialog
+
+    // Decisions
+    this.decisionMode = false; // Checks if we are in decision mode
+    this.currentDecisions = []; // Holds the current decisions object
+    this.answerCallback = null; // Called when answer is given from player
+
+    // Next screen
+    this.allText = ""; // Holds of of the current dialog text (not offsets)
+    this.nextable = true; // Checks if the next screen passable
+    this.currentTextLine = 0; // Show text from this offset
+    this.shouldCloseDialog = false; // Checks if we should close the dialog?
 
     this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "", {
         font: "20px Arial",
         fill: "#000000",
         align: "left"
     });
+
     this.theText = game.add.text(this.TEXT_START_X, this.THE_TEXT_START_Y, "", {
         font: "16px Arial",
         fill: "#000000",
         align: "left"
     });
+
     this.img = game.add.sprite(this.BG_X, this.BG_Y, hudImage);
 
     // We want to move it when closing
@@ -37,6 +51,24 @@ var HUD = function (game, hudImage) {
     this.group.add(this.whoText);
     this.group.add(this.theText);
 };
+
+// Show a dialog in the hud
+HUD.prototype.say = function (who, saysWhat, callback) {
+    if(this.active) {
+        // Add to queue @todo
+        console.log("adding to queue" + who)
+        return;
+    }
+    this.active = true;
+    this.shouldBeClosed = false;
+    this.sayingMode = true;
+    this.decisionMode = false;
+    this.img.reset(this.BG_X, this.BG_Y);
+    this.sayCallback = callback;
+
+	this.whoText.setText(who);
+    this.showText(saysWhat);
+}
 
 // Display text in hud 
 HUD.prototype.showText = function(newText) {
@@ -68,14 +100,19 @@ HUD.prototype.showText = function(newText) {
 // If show text was too big for hud,
 // this function could show the next part of it.
 HUD.prototype.showNextText = function() {
-    if(!this.nextable || this.decisionMode) {
-        return;
-    }
     var lines = this.allText.split('\n'); 
     var currentText = "";
+
+    // Check if we can apply this function
+    if(!this.nextable) {
+        return;
+    }
+
+    // Check if we should close the dialog
     if(this.shouldCloseDialog) {
         this.shouldCloseDialog = false;
-        this.close();
+        this.shouldBeClosed = true;
+        this.sayCallback();
         return;
     }
 
@@ -99,17 +136,6 @@ HUD.prototype.showNextText = function() {
     this._animateTheText(currentText);
 }
 
-
-// Show a dialog in the hud
-HUD.prototype.say = function (who, saysWhat) {
-    this.closed = false;
-    this.currentDecisions = [];
-    this.img.reset(this.BG_X, this.BG_Y)
-
-	this.whoText.setText(who);
-    this.showText(saysWhat);
-}
-
 // Create a nice a nimation effect when saying stuff
 HUD.prototype._animateTheText = function (theText) {
     this.nextable = false;
@@ -123,26 +149,33 @@ HUD.prototype._animateTheText = function (theText) {
     }, this);
 
     // Hacky shit right here! make the 
-    //  next option available when the repeat is done
+    //  next screen available when the repeat is done
     setTimeout(function clearNextable() {
         this.nextable = true;
-        this.decisionMode = true;
     }.bind(this), this.SAY_SPEED_MS * textLength);
 }
 
-HUD.prototype.showDecision = function(question, decisions, answerCallback) {
+HUD.prototype.getDecisionString = function(decisionObject) {
     var decisionString = '';
 
-    this.decisionMode = false;
+    // Convert the decisions object into a string
+    Object.keys(decisionObject).forEach(function(decisionIndex) {
+        decisionString += decisionIndex + '. ' + decisionObject[decisionIndex] + '\n';
+    });
+
+    return decisionString;
+}
+
+HUD.prototype.showDecision = function(question, decisions, answerCallback) {
+    this.decisionMode = true;
+    this.active = true;
+    this.sayingMode = false;
+    this.shouldBeClosed = false;
     this.currentDecisions = decisions;
     this.answerCallback = answerCallback;
 
-    // Convert the decisions object into a string
-    Object.keys(decisions).forEach(function(decisionIndex) {
-        decisionString += decisionIndex + '. ' + decisions[decisionIndex] + '\n';
-    });
     this.whoText.setText(question);
-    this.showText(decisionString);
+    this.showText(this.getDecisionString(decisions));
 }
 
 // Used when an answer was chosen
@@ -156,22 +189,22 @@ HUD.prototype.setAnswer = function(answerIndex) {
 }
 
 HUD.prototype.update = function () {
-    if (this.closed) {
-        this.resetProps();
+    if (this.shouldBeClosed) {
         if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
+        } else if (this.active) {
+            this.resetProps();
         }
+        
     }
-}
-
-// Close the HUD
-HUD.prototype.close = function () {
-    this.closed = true;
 }
 
 // Reset all of the HUD's propertes
 HUD.prototype.resetProps = function() {
+    this.active = false;
+    this.shouldBeClosed = true;
     this.currentDecisions = [];
+    this.currentlySaying = false;
     this.decisionMode = false;
     this.answerCallback = null;
     this.nextable = true;

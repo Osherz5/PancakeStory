@@ -8,11 +8,12 @@ ScriptedEvent = function(game, name, data) {
         this.target = target;
         this.commands = JSON.parse(game.cache.getText(name));
         this.currentCommandIndex = 0;
+        this.waitOnUserInput = false;
         console.log("event fired!");
     }
 
     this.update = function() {
-        if (typeof this.currentCommandIndex == 'undefined' || this.currentCommandIndex > this.commands.steps.length)
+        if (typeof this.currentCommandIndex == 'undefined' || this.currentCommandIndex > this.commands.steps.length || this.waitOnUserInput)
             return;
 
         command = this.commands.steps[this.currentCommandIndex];
@@ -38,7 +39,11 @@ ScriptedEvent = function(game, name, data) {
                 }
                 break;
             case 'say':
-                hud.say('Unknown', command['params'][0]);
+                this.waitOnUserInput = true;
+                hud.say(command['params'][0], command['params'][1], function() {
+                    this.currentCommandIndex++;
+                    this.waitOnUserInput = false;
+                });
 
                 break;
         }

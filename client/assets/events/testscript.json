@@ -2,7 +2,7 @@
     "steps": [
         {"action" : "move", "params" : [20, 30, 5]},
         {"action" : "move", "params" : [20, 40, 7]},
-        {"action" : "say", "params" : ["Fuck you!"]},
+        {"action" : "say", "params" : ["Noob", "Fuck you!"]},
         {"action" : "move", "params" : [20, 50, 1]}
     ]
 }
