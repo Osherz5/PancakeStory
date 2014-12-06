@@ -126,13 +126,14 @@ HUD.prototype._animateTheText = function (theText) {
     //  next option available when the repeat is done
     setTimeout(function clearNextable() {
         this.nextable = true;
+        this.decisionMode = true;
     }.bind(this), this.SAY_SPEED_MS * textLength);
 }
 
 HUD.prototype.showDecision = function(question, decisions, answerCallback) {
     var decisionString = '';
 
-    this.decisionMode = true;
+    this.decisionMode = false;
     this.currentDecisions = decisions;
     this.answerCallback = answerCallback;
 
@@ -146,7 +147,7 @@ HUD.prototype.showDecision = function(question, decisions, answerCallback) {
 
 // Used when an answer was chosen
 HUD.prototype.setAnswer = function(answerIndex) {
-    if(this.decisionMode) {
+    if(this.decisionMode && this.nextable) {
         this.decisionMode = false;
         this.answerCallback(answerIndex, this.currentDecisions[answerIndex]);
         this.shouldCloseDialog = true;
