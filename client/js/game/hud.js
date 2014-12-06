@@ -6,9 +6,12 @@ var HUD = function (game, hudImage) {
     this.THE_TEXT_START_X = 55;
     this.THE_TEXT_START_Y = 452;
     this.SAY_SPEED_MS = 50;
+    this.MAX_LINES_COUNT = 1;
 
     this.game = game;
     this.group = game.add.group();
+    this.currentTextLine = 0;
+    this.allText = "";
     this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "q", {
         font: "20px Arial",
         fill: "#000000",
@@ -29,15 +32,59 @@ var HUD = function (game, hudImage) {
     this.group.add(this.theText);
 };
 
+// Display text in hud 
+HUD.prototype.showText = function(newText) {
+    if(newText.indexOf('\n') === -1) {
+        this.theText.setText(newText);
+        return;
+    }
+    var lines = newText.split('\n');    
+    var textLineCount = lines.length;
+    var currentText = newText;
+    this.allText = newText;
+    this.currentTextLine = 0;
+   
+    // Show only the right amount of lines
+    if(textLineCount > this.MAX_LINES_COUNT) {
+        // Remove the overflowing lines
+        lines.splice(this.MAX_LINES_COUNT, lines.length);
+        currentText = lines.join("");
+        this.currentTextLine = this.MAX_LINES_COUNT; 
+    }
+
+    this.theText.setText(currentText);
+    this._animateTheText();
+}
+
+// If show text was too big for hud,
+// this function could show the next part of it.
+HUD.prototype.showNextText = function() {
+    var lines = this.allText.split('\n'); 
+    var currentText = "";
+
+    if(this.currentTextLine > 0) {
+        lines.splice(0, this.currentTextLine);
+        if(lines.length > this.MAX_LINES_COUNT) {
+            lines.splice(this.MAX_LINES_COUNT, lines.length);
+            currentText = lines.join("");
+
+            this.currentTextLine += this.MAX_LINES_COUNT; 
+        } else {
+            currentText = lines.join("");
+        }
+    }
+    this.theText.setText(currentText);
+    this._animateTheText();
+}
+
+
 // Show a dialog in the hud
 HUD.prototype.say = function(who, saysWhat) {
     this.closed = false;
     this.img.reset(this.BG_X, this.BG_Y)
 
-    console.log(this.img.body);
 	this.whoText.setText(who);
-	this.theText.setText(saysWhat);
-	this._animateTheText();
+    this.showText(saysWhat);
 }
 
 // Create a nice a nimation effect when saying stuff

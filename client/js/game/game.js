@@ -23,15 +23,7 @@ function init() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     hud = new HUD(game, 'hud');
-    hud.say('Bob', ' Hi there fellow dude.');
-
-    setTimeout(function closeHud() {
-        hud.close();
-        setTimeout(function openHud() {
-            console.log("asd");
-            hud.say('Bob', 'Aloha.');
-        }, 1000);
-    }, 3000);
+    hud.say('Bob', 'Hi there\nfellow dude.\nYet another dialog.');
 
     hero = new Hero(game, 10, 10, {r: 255, g: 0, b: 0});
 }
