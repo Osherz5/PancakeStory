@@ -11,8 +11,9 @@ var HUD = function (game, hudImage) {
     // General
     this.group = game.add.group();
     this.game = game;
-    this.active = false; // Checks if we can display a new dialog
+    this.curentlyDisplaying = false; // Checks if we can display a new dialog
     this.shouldBeClosed = true; // Decides if we should close the HUD
+    this.canBeClosedByUser = true; // Decides if the user can start closing the HUD
     
     // Currently saying & saying queue
     this.sayingMode = false; // Checks if we are in saying mode
@@ -28,7 +29,6 @@ var HUD = function (game, hudImage) {
     this.allText = ""; // Holds of of the current dialog text (not offsets)
     this.nextable = true; // Checks if the next screen passable
     this.currentTextLine = 0; // Show text from this offset
-    this.shouldCloseDialog = false; // Checks if we should close the dialog?
 
     this.whoText = game.add.text(this.TEXT_START_X, this.TEXT_START_Y, "", {
         font: "20px Arial",
@@ -54,12 +54,17 @@ var HUD = function (game, hudImage) {
 
 // Show a dialog in the hud
 HUD.prototype.say = function (who, saysWhat, callback) {
-    if(this.active) {
+    if(this.curentlyDisplaying) {
         // Add to queue @todo
-        console.log("adding to queue" + who)
+        this.sayingQueue.push({
+            who: who,
+            saysWhat: saysWhat,
+            callback: callback
+        });
         return;
     }
-    this.active = true;
+    this.curentlyDisplaying = true;
+    this.canBeClosedByUser = false;
     this.shouldBeClosed = false;
     this.sayingMode = true;
     this.decisionMode = false;
@@ -91,7 +96,7 @@ HUD.prototype.showText = function(newText) {
     }
 
     if(textLineCount <= this.MAX_LINES_COUNT) {
-        this.shouldCloseDialog = true;
+        this.canBeClosedByUser = true;
     }
 
     this._animateTheText(currentText);
@@ -109,10 +114,10 @@ HUD.prototype.showNextText = function() {
     }
 
     // Check if we should close the dialog
-    if(this.shouldCloseDialog) {
-        this.shouldCloseDialog = false;
+    if(this.canBeClosedByUser) {
         this.shouldBeClosed = true;
-        this.sayCallback();
+        this.canBeClosedByUser = false;
+        (this.sayCallback) ? this.sayCallback() : null ;
         return;
     }
 
@@ -125,11 +130,11 @@ HUD.prototype.showNextText = function() {
             this.currentTextLine += this.MAX_LINES_COUNT; 
         } else {
             currentText = lines.join('\n');
-            this.shouldCloseDialog = true;
+            this.canBeClosedByUser = true;
         }
     }
     if(currentText === "") {
-        this.shouldCloseDialog = true;
+        this.canBeClosedByUser = true;
         currentText = "...";
     }
 
@@ -168,7 +173,7 @@ HUD.prototype.getDecisionString = function(decisionObject) {
 
 HUD.prototype.showDecision = function(question, decisions, answerCallback) {
     this.decisionMode = true;
-    this.active = true;
+    this.curentlyDisplaying = true;
     this.sayingMode = false;
     this.shouldBeClosed = false;
     this.currentDecisions = decisions;
@@ -183,34 +188,43 @@ HUD.prototype.setAnswer = function(answerIndex) {
     if(this.decisionMode && this.nextable) {
         this.decisionMode = false;
         this.answerCallback(answerIndex, this.currentDecisions[answerIndex]);
-        this.shouldCloseDialog = true;
+        this.shouldBeClosed = true;
         this.showNextText();
     }
 }
 
 HUD.prototype.update = function () {
     if (this.shouldBeClosed) {
+        // Move the hud down
         if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
-        } else if (this.active) {
-            this.resetProps();
+        } else if (this.curentlyDisplaying) {
+            this.curentlyDisplaying = false;
+            if(this.sayingQueue.length > 0) {
+                var nextSaying = this.sayingQueue.shift();
+                this.say(nextSaying.who, nextSaying.saysWhat, nextSaying.callback);
+            } else {
+                // Reset all of the props if its still curently displaying
+                this.resetProps();
+            }
         }
-        
     }
 }
 
 // Reset all of the HUD's propertes
 HUD.prototype.resetProps = function() {
-    this.active = false;
+    this.curentlyDisplaying = false;
     this.shouldBeClosed = true;
+    this.canBeClosedByUser = false;
     this.currentDecisions = [];
-    this.currentlySaying = false;
+    this.sayingQueue = [];
+    this.sayingMode = false;
     this.decisionMode = false;
     this.answerCallback = null;
+    this.sayCallback = null;
     this.nextable = true;
     this.currentTextLine = 0;
     this.allText = "";
-    this.shouldCloseDialog = false;
     this.whoText.setText("");
     this.theText.setText("");
 }
