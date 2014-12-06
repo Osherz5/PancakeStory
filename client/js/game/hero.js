@@ -1,5 +1,5 @@
 Hero = function (game, x, y) {
-    Persona.call(this, game, x, y, '#ff0000', false);
+    Persona.call(this, game, x, y, '#00BBBB', false);
     this.sprite.body.collideWorldBounds = true;
 };
 
