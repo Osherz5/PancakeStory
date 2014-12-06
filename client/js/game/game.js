@@ -10,7 +10,7 @@ game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game', {
 
 function preload() {
     game.load.image('hud', 'assets/img/hud.png');
-    dummyEvent = new ScriptedEvent(game,'dummyEvent','assets/events/testscript.json'); 
+    var dummyEvent = new ScriptedEvent(game,'dummyEvent','assets/events/testscript.json');
     events.push(dummyEvent);
 }
 
@@ -69,7 +69,7 @@ function init() {
     hero.sprite.body.onBeginContact.add(blockHit, this);
 
 
-    dummyEvent.runOn(extra1);
+    //dummyEvent.runOn(extra1);
 }
 
 function update() {
