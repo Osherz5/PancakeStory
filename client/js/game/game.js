@@ -1,6 +1,6 @@
 var hero, game, extra1, keyboard = {}, hud;
 
-game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
+game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game', {
     preload: preload,
     create: init,
     update: update,

@@ -1,5 +1,5 @@
 Persona = function (game, x, y, color, isStatic) {
-    var w = 3, h = 3;
+    var w = 2, h = 2;
     var bitmap = game.add.bitmapData(w, h);
     for (var i = 0; i < w; i++) {
         for (var j = 0; j < h; j++) {
