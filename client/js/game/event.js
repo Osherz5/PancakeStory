@@ -2,12 +2,13 @@
 
 var ScriptedEvent = function(game, name, data) {
     this.data = game.load.text(name,data);
+    this.name = name;
 }
 
 ScriptedEvent.prototype.runOn = function(target) {
     // object needs to be pixelEntity
     this.target = target;
-    this.commands = JSON.parse(game.cache.getText(name));
+    this.commands = JSON.parse(game.cache.getText(this.name));
     this.currentCommandIndex = 0;
     this.waitOnUserInput = false;
     console.log("event fired!");

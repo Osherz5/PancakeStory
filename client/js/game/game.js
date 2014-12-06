@@ -83,7 +83,7 @@ function init() {
     hero.sprite.body.onBeginContact.add(blockHit, this);
 
 
-    //dummyEvent.runOn(extra1);
+    dummyEvent.runOn(extra1);
 }
 
 function update() {
