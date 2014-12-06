@@ -79,7 +79,7 @@ HUD.prototype.showNextText = function() {
 
 
 // Show a dialog in the hud
-HUD.prototype.say = function(who, saysWhat) {
+HUD.prototype.say = function (who, saysWhat) {
     this.closed = false;
     this.img.reset(this.BG_X, this.BG_Y)
 
@@ -88,29 +88,29 @@ HUD.prototype.say = function(who, saysWhat) {
 }
 
 // Create a nice a nimation effect when saying stuff
-HUD.prototype._animateTheText = function() {
-	var theText = this.theText.text;
-	var textLength = theText.length + 1;
-	var charIndex = 0;
+HUD.prototype._animateTheText = function () {
+    var theText = this.theText.text;
+    var textLength = theText.length + 1;
+    var charIndex = 0;
 
-	// Repeat each new char every 80ms
-	game.time.events.repeat(this.SAY_SPEED_MS, textLength, function() {
-		var newText = theText.substring(0, ++charIndex);
-		this.theText.setText(newText)
-	}, this);
+    // Repeat each new char every 80ms
+    game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
+        var newText = theText.substring(0, ++charIndex);
+        this.theText.setText(newText)
+    }, this);
 }
 
-HUD.prototype.update = function() {
-    if(this.closed) {
+HUD.prototype.update = function () {
+    if (this.closed) {
         this.whoText.setText("");
         this.theText.setText("");
-        if(this.img.body.y <= this.game.height) {
+        if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
         }
     }
 }
 
 // Close the HUD
-HUD.prototype.close = function() {
+HUD.prototype.close = function () {
     this.closed = true;
 }
