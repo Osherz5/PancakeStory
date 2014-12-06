@@ -1,4 +1,4 @@
-var hero, game, extra1, keyboard = {}, hud, events = [];
+var hero, game, extra1, keyboard = {}, hud, events = [], dummyEvent;
 var isSwordDrawn = false;
 
 game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game', {
@@ -77,12 +77,15 @@ function init() {
     hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 
     hero = new Hero(game, 10, 10, '#00ff00');
-    extra1 = new Persona(game, 30, 30, '#00ff00', false);
+    extra1 = new Persona(game, 30, 30, '#00ff00', true);
     //var map = new Map(game);
     //this.game.world.addAt(hero, 2);
-    hero.sprite.body.createBodyCallback(extra1.sprite, blockHit, this);
+    hero.sprite.body.createBodyCallback(extra1.sprite, function (body) {
+            if (isSwordDrawn) {
+                extra1.kill();
+            }
+        }, this);
     game.physics.p2.setImpactEvents(true);
-
     dummyEvent.runOn(extra1);
 }
 
@@ -103,10 +106,4 @@ function update() {
 
 function render() {
 
-}
-
-function blockHit(body) {
-    if (isSwordDrawn) {
-        extra1.kill();
-    }
 }
