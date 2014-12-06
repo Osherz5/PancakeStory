@@ -6,7 +6,7 @@ var HUD = function (game, hudImage) {
     this.THE_TEXT_START_X = 55;
     this.THE_TEXT_START_Y = 452;
     this.SAY_SPEED_MS = 50;
-    this.MAX_LINES_COUNT = 1;
+    this.MAX_LINES_COUNT = 5;
 
     this.game = game;
     this.group = game.add.group();
@@ -50,7 +50,7 @@ HUD.prototype.showText = function(newText) {
     if(textLineCount > this.MAX_LINES_COUNT) {
         // Remove the overflowing lines
         lines.splice(this.MAX_LINES_COUNT, lines.length);
-        currentText = lines.join("");
+        currentText = lines.join('\n');
         this.currentTextLine = this.MAX_LINES_COUNT; 
     }
 
@@ -63,8 +63,8 @@ HUD.prototype.showNextText = function() {
     var lines = this.allText.split('\n'); 
     var currentText = "";
     if(this.shouldCloseDialog) {
+        this.shouldCloseDialog = false;
         this.close();
-        this.shouldCloseDialog= false;
         return;
     }
 
@@ -72,14 +72,19 @@ HUD.prototype.showNextText = function() {
         lines.splice(0, this.currentTextLine);
         if(lines.length > this.MAX_LINES_COUNT) {
             lines.splice(this.MAX_LINES_COUNT, lines.length);
-            currentText = lines.join("");
+            currentText = lines.join('\n');
 
             this.currentTextLine += this.MAX_LINES_COUNT; 
         } else {
-            currentText = lines.join("");
+            currentText = lines.join('\n');
             this.shouldCloseDialog = true;
         }
     }
+    if(currentText === "") {
+        this.shouldCloseDialog = true;
+        currentText = "...";
+    }
+
     this._animateTheText(currentText);
 }
 

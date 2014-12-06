@@ -30,7 +30,7 @@ function init() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     hud = new HUD(game, 'hud');
-    hud.say('Bob', 'Hi there\nfellow dude.\nYet another dialog.');
+    hud.say('Bob', 'Hi there\nfellow dude.\nYet another dialog.\ntest\n123\n123\n123');
 
     hero = new Hero(game, 10, 10, {r: 255, g: 0, b: 0});
     extra1 = new Persona(game, 30, 30, {r: 0, g: 255, b: 0}, false);
