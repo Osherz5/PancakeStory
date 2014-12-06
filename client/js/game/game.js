@@ -8,7 +8,7 @@ game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
 });
 
 function preload() {
-    game.load.image('hud','assets/img/hud.png');
+    game.load.image('hud', 'assets/img/hud.png');
 }
 
 function init() {
@@ -23,7 +23,7 @@ function init() {
     game.time.advancedTiming = true;
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    hud = new HUD(game, 'hud');
+    var hud = new HUD(game, 'hud');
     hud.say('Bob', ' Hi there fellow dude.')
 
     hero = new Hero(game, 10, 10, {r: 255, g: 0, b: 0});

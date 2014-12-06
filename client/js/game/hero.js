@@ -1,5 +1,6 @@
 Hero = function (game, x, y) {
     Persona.call(this, game, x, y, {r: 255, g: 0, b: 0});
+    this.sprite.body.collideWorldBounds = true;
 };
 
 Hero.prototype = Object.create(Persona.prototype);

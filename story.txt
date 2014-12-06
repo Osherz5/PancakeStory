@@ -1,6 +1,69 @@
+intro:
 Our story begins with a pixel named "Bota(~)oAzulComQuintas-FeirasVerdesOTerceiro", but you can call him "You" (proncounced "U").
-U was born to two pixerian parents who were portuguese enthusiasts in a far away village.
+U were born to two pixerian parents who were portuguese enthusiasts in a far away village.
 His parents were killed by a bi-sexual dragon, who also kidnapped his girlfriend who's name is "princess".
 "princess" likes the color pink, she REALLY likes the color pink.
 You have to save "princess".
+
+first cutscene:
+A dialoug between You and A friend of his at the beggining is telling the intro of our story.
+
+
+
+gamaplay:
+You begin at the home village, in your hut, the village is composed of a few houses and a road which leads to a grassland.
+In the grassland you notice the ground is scorched, and there's a burnt corpse of a knight, you take his sword.
+
+cutscene:
+The knight's son appears, and tries to attack you for stealing his father's sword.
+
+Back to game:
+You are now in your first fight, you have to kill his son procceed.
+The son is a very weak enemy, fighting him is a only some kind of a fighting mechanics tutorial.
+You have to inspect his body, and you get a key, and some other stuff.
+You go on further in the grasslands, and you encounter some weak enemies: wolves. you fight.
+You procceed, you arrive at the woods. (many collidable trees)
+The woods is some kind of a maze which leads to a dead end, at this dead end an event is triggered back at the village, a lumberjack goes out of one of the houses.
+The player realizes that he is stuck in a dead end and he needs to go back into the village.
+Talking to the lumbejack that left his house, he gets an axe from him.
+The player still can't cut down trees at this point, he have to do a skill learning mission given by the lumberjack.
+The lumberjack is giving the player a mission to clean his windows, (optionally you will be able to see the windows' colors changing from dirty->wax->clean).
+After cleaning the windows the player quire the lumberjacking skill, which allows him to cut down trees.
+Having that skill, allows the player to attack trees with the axe equiped and reduce its hp.
+The player continues back to the maze, and cut down its dead end.
+Arriving at a road that leads into a town, the trip down the road is full of fun stuff: coins, enemies, easter eggs...
+Continuing down the road, you encounter a bandit on a horse (event). A dialoug appears with two options, one that states that you have coins, and the other that states that you don't have any.
+If you have any coins, the bandit will steal them no matter the choice. If you don't have any, and you state that, the bandit might give you some out of pity.
+You arrive at the town, seeing a sign which says "Welcome to RetroVile".
+In the town there are: many generic npcs which say stupid stuff, marketplace, cityhall, [...].
+
+town structures:
+cityhall - there's a mayor in his office, and a secretary at the desk. to talk to the mayor you have to interact with the secretary to ask for a meeting.
+the meeting will be set to 5 minutes later, after which the mayor will open his door for a short period of time.
+every missed meeting will raise the wating time (from 5 to 7 etc...)
+
+marketplace - npcs with theme shops.
+
+
+To continue out of the town, you have to cross Lake Moore.
+The player have to talk with the mayor, and tell him his story about killing the dragon, the mayor mocks the player for the wierd act of telling this kind of story to the him which he doesn't have anything to do with it.
+The mayor recommend the player to find the Wise Old Man, which lives in the mountains.
+
+The mountains is a spiraled zone in which the player ascend to the top, there lies the Old Wise Man.
+Monkeys everywhere, they don't have to walk the spiral, monkeys can climb through the mountains.
+Monkeys steal food and coins from the player, and drop whatever they stole (+ other stuff) and turn into corpses which you have to skin later (with a knife [which you have to buy in the marketplace]).
+You arrive at the Old Wise Man, he tells you a poem.
+"
+The wind blows,
+The river flows,
+The monkey's fur grows.
+
+The monkey's hair,
+What makes a chair,
+Will take You to your maiden's fair.
+"
+ -- Old Wise Man, 2014
+
+The player now have to collect wood & monkey fur in order to build a boat.
+He uses the boat to cross the river and reach the dragon's cave, in which happens the endgame.
 
