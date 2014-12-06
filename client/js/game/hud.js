@@ -9,6 +9,7 @@ var HUD = function (game, hudImage) {
     this.MAX_LINES_COUNT = 5;
 
     this.game = game;
+    this.nextable = true;
     this.group = game.add.group();
     this.currentTextLine = 0;
     this.allText = "";
@@ -60,6 +61,9 @@ HUD.prototype.showText = function(newText) {
 // If show text was too big for hud,
 // this function could show the next part of it.
 HUD.prototype.showNextText = function() {
+    if(!this.nextable) {
+        return;
+    }
     var lines = this.allText.split('\n'); 
     var currentText = "";
     if(this.shouldCloseDialog) {
@@ -100,6 +104,7 @@ HUD.prototype.say = function (who, saysWhat) {
 
 // Create a nice a nimation effect when saying stuff
 HUD.prototype._animateTheText = function (theText) {
+    this.nextable = false;
     var textLength = theText.length + 1;
     var charIndex = 0;
 
@@ -108,6 +113,12 @@ HUD.prototype._animateTheText = function (theText) {
         var newText = theText.substring(0, ++charIndex);
         this.theText.setText(newText)
     }, this);
+
+    // Hacky shit right here! make the 
+    //  next option available when the repeat is done
+    setTimeout(function clearNextable() {
+        this.nextable = true;
+    }.bind(this), this.SAY_SPEED_MS * textLength);
 }
 
 HUD.prototype.update = function () {
