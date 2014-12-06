@@ -1,21 +1,19 @@
+window.app = {};
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: init, update: update, render: render});
-var players = [], mainPlayer;
-var bmd, sprite;
-
-function preload() {
-	// Load game assets here
-}
+var hero, game;
 
 function init() {
-	game.time.advancedTiming = true;
-	game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.time.advancedTiming = true;
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-	new Persona(game, 10, 10, {r:255, g:0, b:0 });
+    hero = new window.app.Persona(game, 10, 10, {r: 255, g: 0, b: 0});
 }
 
 function update() {
+    //hero.update();
 }
 
-function render () {
-}
+game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
+    create: init,
+    update: update
+});
