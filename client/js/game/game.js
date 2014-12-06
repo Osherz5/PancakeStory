@@ -75,7 +75,6 @@ function init() {
 function update() {
     hero.update();
     hud.update();
-    game.physics.arcade.collide(hero.sprite, extra1.sprite);
     events.forEach(function(e) {
         e.update();
     });
@@ -95,6 +94,7 @@ function render() {
 function blockHit(body) {
     if (body) {
         if (isSwordDrawn) {
+            console.log('hi')
             extra1.kill();
         }
     }
