@@ -11,7 +11,7 @@ game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game', {
 function preload() {
     game.load.image('hud', 'assets/img/hud.png');
     game.load.image('tile', 'assets/img/a.png');
-    dummyEvent = new ScriptedEvent(game,'dummyEvent','assets/events/testscript.json');
+    dummyEvent = new ScriptedEvent(game, 'dummyEvent', 'assets/events/testscript.json');
     events.push(dummyEvent);
 }
 
@@ -52,26 +52,26 @@ function init() {
     hud = new HUD(game, 'hud');
     hud.say('Bob', 'Hi there\nfellow dude.');
     hud.showDecision(
-        'What is your favorite color?', 
+        'What is your favorite color?',
         {
             1: 'blue',
             2: 'red',
             3: 'green'
-        }, 
+        },
         function (index, answer) {
-            console.log('You chose: '+ index + '. ' + answer);
+            console.log('You chose: ' + index + '. ' + answer);
         }
     );
 
     hud.showDecision(
-        'Are you a:', 
+        'Are you a:',
         {
             1: 'cat person',
             2: 'dog person',
             3: 'platipus person'
-        }, 
+        },
         function (index, answer) {
-            console.log('You chose: '+ index + '. ' + answer);
+            console.log('You chose: ' + index + '. ' + answer);
         }
     );
     hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
@@ -80,8 +80,8 @@ function init() {
     extra1 = new Persona(game, 30, 30, '#00ff00', false);
     //var map = new Map(game);
     //this.game.world.addAt(hero, 2);
-    hero.sprite.body.onBeginContact.add(blockHit, this);
-
+    hero.sprite.body.createBodyCallback(extra1.sprite, blockHit, this);
+    game.physics.p2.setImpactEvents(true);
 
     dummyEvent.runOn(extra1);
 }
@@ -89,7 +89,7 @@ function init() {
 function update() {
     hero.update();
     hud.update();
-    events.forEach(function(e) {
+    events.forEach(function (e) {
         e.update();
     });
 
@@ -106,10 +106,7 @@ function render() {
 }
 
 function blockHit(body) {
-    if (body) {
-        if (isSwordDrawn) {
-            console.log('hi');
-            extra1.kill();
-        }
+    if (isSwordDrawn) {
+        extra1.kill();
     }
 }
