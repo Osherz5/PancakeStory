@@ -4,6 +4,7 @@
 
 *.iml
 *.swp
+.*.swo
 
 ## Directory-based project format:
 .idea/

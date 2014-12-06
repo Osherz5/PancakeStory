@@ -1,9 +1,9 @@
 {
     "steps": [
-        ["move", 20, 30, 1],
-        ["wait", 2000],
-        ["move", 20, 40, 1],
-        ["wait", 1000],
-        ["move", 20, 50, 1]
+        {"action" : "move", "params" : [20, 30, 1]},
+        {"action" : "wait", "params" : [2000]},
+        {"action" : "move", "params" : [20, 40, 1]},
+        {"action" : "wait", "params" : [1000]},
+        {"action" : "move", "params" : [20, 50, 1]}
     ]
 }
