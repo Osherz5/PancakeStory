@@ -1,24 +1,24 @@
 Hero = function (game, x, y) {
-    Persona.call(this, game, x, y, {r: 255, g: 0, b: 0}, true);
+    Persona.call(this, game, x, y, {r: 255, g: 0, b: 0}, false);
     this.sprite.body.collideWorldBounds = true;
 };
 
 Hero.prototype = Object.create(Persona.prototype);
 
 Hero.prototype.update = function () {
-    var speed = 30;
-    this.sprite.body.velocity = {x: 0, y: 0};
+    var speed = 50;
+    this.sprite.body.setZeroVelocity();
     if (keyboard.UP.isDown) {
-        this.sprite.body.velocity.y = -speed;
+        this.sprite.body.moveUp(speed);
     }
     if (keyboard.DOWN.isDown) {
-        this.sprite.body.velocity.y = speed;
+        this.sprite.body.moveDown(speed);
     }
     if (keyboard.RIGHT.isDown) {
-        this.sprite.body.velocity.x = speed;
+        this.sprite.body.moveRight(speed);
     }
     if (keyboard.LEFT.isDown) {
-        this.sprite.body.velocity.x = -speed;
+        this.sprite.body.moveLeft(speed);
     }
 
 };

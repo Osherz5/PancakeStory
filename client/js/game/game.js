@@ -21,7 +21,7 @@ function init() {
     };
 
     game.time.advancedTiming = true;
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.startSystem(Phaser.Physics.P2JS);
 
     hud = new HUD(game, 'hud');
     hud.say('Bob', ' Hi there fellow dude.');
@@ -32,20 +32,14 @@ function init() {
             hud.say('Bob', 'Aloha.');
         }, 1000);
     }, 3000);
-
     hero = new Hero(game, 10, 10, {r: 255, g: 0, b: 0});
-    extra1 = new Persona(game, 30, 30, {r: 0, g: 255, b: 0}, false);
+    extra1 = new Persona(game, 30, 30, {r: 0, g: 255, b: 0}, true);
 
 }
 
 function update() {
     hero.update();
     hud.update();
-    game.physics.arcade.collide(hero.sprite, extra1.sprite);
-}
-
-function render() {
-
 }
 
 function render() {
