@@ -3,6 +3,7 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
 *.iml
+*.swp
 
 ## Directory-based project format:
 .idea/

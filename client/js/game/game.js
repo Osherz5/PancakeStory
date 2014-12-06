@@ -1,4 +1,4 @@
-var hero, game, extra1, keyboard = {}, hud;
+var hero, game, extra1, keyboard = {}, hud, events = [];
 
 game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
     preload: preload,
@@ -9,6 +9,8 @@ game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', {
 
 function preload() {
     game.load.image('hud', 'assets/img/hud.png');
+    dummyEvent = new ScriptedEvent(game,'dummyEvent','assets/events/testscript.json'); 
+    events.push(dummyEvent);
 }
 
 function init() {
@@ -29,12 +31,16 @@ function init() {
     hero = new Hero(game, 10, 10, {r: 255, g: 0, b: 0});
     extra1 = new Persona(game, 30, 30, {r: 0, g: 255, b: 0}, false);
 
+    dummyEvent.runOn(extra1);
 }
 
 function update() {
     hero.update();
     hud.update();
     game.physics.arcade.collide(hero.sprite, extra1.sprite);
+    events.forEach(function(e) {
+        e.update();
+    });
 }
 
 function render() {
