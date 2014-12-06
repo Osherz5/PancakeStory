@@ -33,7 +33,7 @@ ScriptedEvent = function(game, name, data) {
                 // check if command ended
 
                 if (Math.round(this.target.sprite.x) == Math.round(dest[0]) && Math.round(this.target.sprite.y) == Math.round(dest[1])) {
-                    console.log("ended command");
+                    //console.log("ended command");
                     this.target.sprite.body.setZeroVelocity();
                     this.currentCommandIndex++;
                 }

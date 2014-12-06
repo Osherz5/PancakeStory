@@ -14,10 +14,10 @@ var HUD = function (game, hudImage) {
     this.curentlyDisplaying = false; // Checks if we can display a new dialog
     this.shouldBeClosed = true; // Decides if we should close the HUD
     this.canBeClosedByUser = true; // Decides if the user can start closing the HUD
+    this.queue = []; // Holds dialogs that are waiting for the current dialog to end
     
-    // Currently saying & saying queue
+    // Currently saying
     this.sayingMode = false; // Checks if we are in saying mode
-    this.sayingQueue = []; // Holds dialogs that are waiting for the current dialog to end
     this.sayCallback = null; // Used to tell if the user has read the dialog
 
     // Decisions
@@ -55,8 +55,8 @@ var HUD = function (game, hudImage) {
 // Show a dialog in the hud
 HUD.prototype.say = function (who, saysWhat, callback) {
     if(this.curentlyDisplaying) {
-        // Add to queue @todo
-        this.sayingQueue.push({
+        this.queue.push({
+            type: 'say',
             who: who,
             saysWhat: saysWhat,
             callback: callback
@@ -99,7 +99,7 @@ HUD.prototype.showText = function(newText) {
         this.canBeClosedByUser = true;
     }
 
-    this._animateTheText(currentText);
+    this.animateTheText(currentText);
 }
 
 // If show text was too big for hud,
@@ -110,6 +110,11 @@ HUD.prototype.showNextText = function() {
 
     // Check if we can apply this function
     if(!this.nextable) {
+        return;
+    }
+
+    // We dont want user's to close the decision with "A"
+    if(this.decisionMode) {
         return;
     }
 
@@ -138,11 +143,11 @@ HUD.prototype.showNextText = function() {
         currentText = "...";
     }
 
-    this._animateTheText(currentText);
+    this.animateTheText(currentText);
 }
 
 // Create a nice a nimation effect when saying stuff
-HUD.prototype._animateTheText = function (theText) {
+HUD.prototype.animateTheText = function (theText) {
     this.nextable = false;
     var textLength = theText.length + 1;
     var charIndex = 0;
@@ -172,12 +177,22 @@ HUD.prototype.getDecisionString = function(decisionObject) {
 }
 
 HUD.prototype.showDecision = function(question, decisions, answerCallback) {
+    if(this.curentlyDisplaying) {
+        this.queue.push({
+            type: 'decision',
+            question: question,
+            decisions: decisions,
+            callback: answerCallback
+        });
+        return;
+    }
     this.decisionMode = true;
     this.curentlyDisplaying = true;
     this.sayingMode = false;
     this.shouldBeClosed = false;
     this.currentDecisions = decisions;
     this.answerCallback = answerCallback;
+    this.img.reset(this.BG_X, this.BG_Y);
 
     this.whoText.setText(question);
     this.showText(this.getDecisionString(decisions));
@@ -194,15 +209,24 @@ HUD.prototype.setAnswer = function(answerIndex) {
 }
 
 HUD.prototype.update = function () {
-    if (this.shouldBeClosed) {
+    if (this.shouldBeClosed && this.curentlyDisplaying === true) {
         // Move the hud down
         if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
         } else if (this.curentlyDisplaying) {
+            // Dispatch queue dialogs
             this.curentlyDisplaying = false;
-            if(this.sayingQueue.length > 0) {
-                var nextSaying = this.sayingQueue.shift();
-                this.say(nextSaying.who, nextSaying.saysWhat, nextSaying.callback);
+            if(this.queue.length > 0) {
+                var next = this.queue.shift();
+                this.whoText.setText("");
+                this.theText.setText("");
+                this.currentTextLine = 0;
+                this.allText = "";
+                if(next.type === 'say') {
+                    this.say(next.who, next.saysWhat, next.callback);
+                } else {
+                    this.showDecision(next.question, next.decisions, next.callback);
+                }
             } else {
                 // Reset all of the props if its still curently displaying
                 this.resetProps();
@@ -211,18 +235,19 @@ HUD.prototype.update = function () {
     }
 }
 
+
 // Reset all of the HUD's propertes
 HUD.prototype.resetProps = function() {
     this.curentlyDisplaying = false;
     this.shouldBeClosed = true;
     this.canBeClosedByUser = false;
     this.currentDecisions = [];
-    this.sayingQueue = [];
+    this.queue = [];
     this.sayingMode = false;
     this.decisionMode = false;
     this.answerCallback = null;
     this.sayCallback = null;
-    this.nextable = true;
+    this.nextable = false;
     this.currentTextLine = 0;
     this.allText = "";
     this.whoText.setText("");
