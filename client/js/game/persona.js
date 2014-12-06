@@ -17,5 +17,5 @@ Persona.prototype._constructBitdataRectangle = function (height, width, color) {
 
 Persona.prototype.kill = function () {
     this.sprite.kill();
-    this.sprite = game.add.sprite(this.sprite.x, this.sprite.y, this._constructBitdataRectangle(2, 8, '#ff0000'));
+    this.sprite = this.game.add.sprite(this.sprite.x, this.sprite.y, this._constructBitdataRectangle(2, 8, '#ff0000'));
 };

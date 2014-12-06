@@ -50,18 +50,31 @@ function init() {
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     hud = new HUD(game, 'hud');
-    //hud.say('Bob', 'Hi there\nfellow dude.');
+    hud.say('Bob', 'Hi there\nfellow dude.');
     hud.showDecision(
         'What is your favorite color?', 
         {
-            1: 'a',
-            2: 'b',
-            3: 'c'
+            1: 'blue',
+            2: 'red',
+            3: 'green'
         }, 
         function (index, answer) {
             console.log('You chose: '+ index + '. ' + answer);
         }
     );
+
+    hud.showDecision(
+        'Are you a:', 
+        {
+            1: 'cat person',
+            2: 'dog person',
+            3: 'platipus person'
+        }, 
+        function (index, answer) {
+            console.log('You chose: '+ index + '. ' + answer);
+        }
+    );
+    hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 
     hero = new Hero(game, 10, 10, '#00ff00');
     extra1 = new Persona(game, 30, 30, '#00ff00', false);
@@ -95,7 +108,7 @@ function render() {
 function blockHit(body) {
     if (body) {
         if (isSwordDrawn) {
-            console.log('hi')
+            console.log('hi');
             extra1.kill();
         }
     }
