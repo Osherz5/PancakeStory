@@ -26,4 +26,17 @@ var HUD = function(game, hudImage) {
 HUD.prototype.say = function(who, saysWhat) {
 	this.whoText.setText(who);
 	this.theText.setText(saysWhat);
+	this._animateTheText();
+}
+
+HUD.prototype._animateTheText = function() {
+	var theText = this.theText.text;
+	var textLength = theText.length + 1;
+	var charIndex = 0;
+
+	// Repeat each new char every 80ms
+	game.time.events.repeat(50, textLength, function() {
+		var newText = theText.substring(0, ++charIndex);
+		this.theText.setText(newText)
+	}, this);
 }
