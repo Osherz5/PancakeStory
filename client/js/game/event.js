@@ -34,12 +34,11 @@ ScriptedEvent.prototype.update = function () {
             this.target.moveTo(dest[0],dest[1],this.nextCommand.bind(this));
             break;
         case 'say':
-            this.ongoingCommand = true;
             TheGame.hud.say(command.params[0], command.params[1],this.nextCommand.bind(this));
 
             break;
         case 'wait':
-            this.ongoingCommand = true;
+            TheGame.game.time.events.add(parseInt(command.params[0]),this.nextCommand,this);
             break;
     }
 };
