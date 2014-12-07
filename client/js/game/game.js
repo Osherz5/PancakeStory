@@ -80,6 +80,7 @@ Game.InGame.prototype = {
         );
         Game.hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 
+
         Game.hero = new Hero(this.game, 10, 10, '#00ff00');
         Game.extra1 = new Persona(this.game, 30, 30, 7, '#00ff00', true);
         //var map = new Map(this.game);

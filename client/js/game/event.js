@@ -1,6 +1,7 @@
 var ScriptedEvent = function (game, name, data) {
     this.data = game.load.text(name, data);
     this.name = name;
+    this.ongoingCommand = false;
 };
 
 ScriptedEvent.prototype.runOn = function (target) {
@@ -8,7 +9,6 @@ ScriptedEvent.prototype.runOn = function (target) {
     this.target = target;
     this.commands = JSON.parse(game.cache.getText(this.name));
     this.currentCommandIndex = 0;
-    this.waitOnUserInput = false;
     this.ongoingCommand = false;
     console.log("event fired!");
 };
@@ -16,8 +16,8 @@ ScriptedEvent.prototype.runOn = function (target) {
 ScriptedEvent.prototype.update = function () {
     if (typeof this.currentCommandIndex == 'undefined'
         || !this.target.sprite.body
-        || this.currentCommandIndex > this.commands.steps.length
-        || this.waitOnUserInput) {
+        || this.currentCommandIndex >= this.commands.steps.length
+        || this.ongoingCommand) {
         return;
     }
 
@@ -29,27 +29,26 @@ ScriptedEvent.prototype.update = function () {
             var dest = [command.params[0], command.params[1]];
             var speed = command.params[2];
 
-            if (!this.ongoingCommand)
-                this.target.moveTo(dest[0],dest[1]);
-            
-            this.ongoingCommand = true;
-
-
-            if(this.target.reachedDest) {
-                this.ongoingCommand = false;
-                this.currentCommandIndex++;
-                console.log('next command');
+            if (!this.ongoingCommand){
+                this.ongoingCommand = true;
+                this.target.moveTo(dest[0],dest[1],this.nextCommand.bind(this));
             }
+
             break;
         case 'say':
-            this.waitOnUserInput = true;
-            Game.hud.say(command.params[0], command.params[1], function sayCallback() {
-                this.currentCommandIndex++;
-                this.waitOnUserInput = false;
-            });
+            this.ongoingCommand = true;
+            Game.hud.say(command.params[0], command.params[1],this.nextCommand.bind(this));
 
             break;
     }
 };
 
+ScriptedEvent.prototype.nextCommand = function() {
+    this.ongoingCommand = false;
+    this.currentCommandIndex++;
+    console.log('next command');
+}
 
+addEvent = function(game, events, name, path) {
+    events[name] = new ScriptedEvent(game, name, path);
+}

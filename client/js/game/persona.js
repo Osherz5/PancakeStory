@@ -39,12 +39,15 @@ Persona.prototype.update = function(){
             && Math.round(this.sprite.y) === Math.round(this.dest[1])) {
                 this.sprite.body.setZeroVelocity();
                 this.reachedDest = true;
+                if(this.onReachCallback)
+                    this.onReachCallback();
          }
     }
 };
 
-Persona.prototype.moveTo = function(x, y){
+Persona.prototype.moveTo = function(x, y, onReachCallback){
     // set destination
     this.dest = [x, y];
     this.reachedDest = false;
+    this.onReachCallback = onReachCallback;
 };
