@@ -89,7 +89,7 @@ TheGame.InGame.prototype = {
 
         this.game.add.sprite(0, 0, drawMap(this.game));
         TheGame.hero = new Hero(this.game, 10, 10);
-        TheGame.extra1 = new Persona(this.game, 30, 30, 7, '#00aa00', true);
+        TheGame.extra1 = new Persona(this.game, 30, 30, 10, '#00aa00', true);
 
         TheGame.hero.sprite.body.createBodyCallback(TheGame.extra1.sprite, function (body) {
                 if (TheGame.isSwordDrawn) {
