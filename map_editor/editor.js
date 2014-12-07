@@ -16,6 +16,32 @@ var regions = [
     {name: 'Canada'}, // Region #2
 ];
 
+var tools = [
+    {name: 'Brush'}, // Tool #0
+    {name: 'Pen'},   // Tool #1
+];
+
+function getNearbyTileIndexes(index) {
+    var near = [];
+    // Top
+    if (index >= MAP_COLS) {
+        near.push(index - MAP_COLS);
+    }
+    // Bottom
+    if (index < ((MAP_COLS - 1) * MAP_ROWS)) {
+        near.push(index + MAP_COLS);
+    }
+    // Left
+    if (index % MAP_COLS != 0) {
+        near.push(index + 1);
+    }
+    // Right
+    if (index + 1 % MAP_COLS != 0) {
+        near.push(index - 1);
+    }
+    return near;
+}
+
 // Utility function to render radio buttons from an options array
 function renderRadioButtons(name, container, options) {
     var container = document.querySelector(container);
@@ -56,31 +82,47 @@ function renderTile(tile, index) {
     div.style.background = tileTypes[tileType].color;
 
     // Set tile index
-    div.setAttribute('data-index', index);
+    div.id = index;
 
     // Render tile region (not practical when tile size is too small)
     // div.innerText = tileRegion;
 
-    // OnMouseOver and Click handlers for continous tile filling
-    div.onmouseover = div.onclick = function (e) {
-        // If left button is pressed
-        if (1 == e.which) {
-            var selectedTileType = document.querySelector('.tiles input:checked').value;
-            var selectedTileRegion = document.querySelector('.regions input:checked').value;
-            // Update tile data
-            var newTile = [
-                parseInt(selectedTileType), // Tile type
-                parseInt(selectedTileRegion) // Tile region
-            ];
-            window.tiles[this.dataset.index] = newTile;
+    function fillTile(tile) {
+        var selectedTileType = document.querySelector('.tiles input:checked').value;
+        var selectedTileRegion = document.querySelector('.regions input:checked').value;
 
-            this.style.background = tileTypes[selectedTileType].color;
-            // this.innerText = selectedTileRegion;
-            this.title = selectedTileRegion;
+        // Update tile data
+        var newTile = [
+            parseInt(selectedTileType), // Tile type
+            parseInt(selectedTileRegion) // Tile region
+        ];
+        window.tiles[tile.id] = newTile;
 
-            e.preventDefault();
-        }
+        tile.style.background = tileTypes[selectedTileType].color;
+        // this.innerText = selectedTileRegion;
+        tile.title = selectedTileRegion;
     };
+
+    ['click', 'mouseover'].forEach(function(eventType) {
+        div.addEventListener(eventType, function (e) {
+            // If left button isn't pressed return
+            if (e.which != 1) return;
+            var selectedTool = document.querySelector('.tools input:checked').id;
+            if ('Pen' == selectedTool) {
+                fillTile(this);
+            } else if ('Brush' == selectedTool) {
+                // Fill selected tile
+                fillTile(this);
+
+                // Fill near tiles
+                var near = getNearbyTileIndexes(index).map(function(index) {
+                    return document.getElementById(index);
+                });
+                near.forEach(fillTile);
+            }
+            e.preventDefault();
+        })
+    });
 
     map.appendChild(div);
 };
@@ -110,6 +152,7 @@ window.onload = function() {
     // Setup the editor environment
     renderRadioButtons('tiles', '.tiles', tileTypes);
     renderRadioButtons('regions', '.regions', regions);
+    renderRadioButtons('tool', '.tools', tools);
 
     // Load the map file and render the tiles
     loadMapFile(function(xhr) {
