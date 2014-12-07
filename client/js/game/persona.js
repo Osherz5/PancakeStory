@@ -26,6 +26,8 @@ Persona.prototype.kill = function () {
 };
 
 Persona.prototype.update = function(){
+    if(!this.sprite.body)
+        return;
     // update movement
     if(!this.reachedDest) {
          // move X
