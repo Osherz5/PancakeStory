@@ -12,7 +12,7 @@ window.onload = function() {
 
     game = new Phaser.Game(1000, 600, Phaser.AUTO, 'gameContainer');
     TheGame.game = game; // fix for HUD
-    
+
     //  Add the States your game has.
     //  You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
     game.state.add('Boot', TheGame.Boot);
@@ -35,7 +35,7 @@ TheGame.InGame.prototype = {
        console.log("yay all loaded");
     },
     create: function() {
-        keyboard = {
+        TheGame.keyboard = {
             UP: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
             DOWN: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
             LEFT: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
@@ -90,8 +90,18 @@ TheGame.InGame.prototype = {
                     TheGame.extra1.kill();
                 }
             }, this);
-        this.game.physics.p2.setImpactEvents(true);
+
+        //var map = new Map(TheGame.game);
+        TheGame.hero.sprite.body.createBodyCallback(TheGame.extra1, function (body) {
+            if (TheGame.isSwordDrawn) {
+                TheGame.extra1.kill();
+            }
+        }, this);
+        TheGame.game.physics.p2.setImpactEvents(true);
+
+
         TheGame.dummyEvent.runOn(TheGame.extra1);
+        
     },
     update: function() {
         TheGame.hero.update();
@@ -101,11 +111,11 @@ TheGame.InGame.prototype = {
         });
         TheGame.extra1.update();
 
-        if (keyboard.DRAW_SWORD.justUp) {
-            isSwordDrawn = true;
+        if (TheGame.keyboard.DRAW_SWORD.justUp) {
+            TheGame.isSwordDrawn = true;
         }
-        if (keyboard.SHEATHE.justUp) {
-            isSwordDrawn = false;
+        if (TheGame.keyboard.SHEATHE.justUp) {
+            TheGame.isSwordDrawn = false;
         }
     },
     render: function() {
