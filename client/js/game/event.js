@@ -22,6 +22,8 @@ ScriptedEvent.prototype.update = function () {
     }
 
     var command = this.commands.steps[this.currentCommandIndex];
+    
+    this.ongoingCommand = true;
 
     switch (command.action) {
         case 'move':
@@ -29,16 +31,15 @@ ScriptedEvent.prototype.update = function () {
             var dest = [command.params[0], command.params[1]];
             var speed = command.params[2];
 
-            if (!this.ongoingCommand){
-                this.ongoingCommand = true;
-                this.target.moveTo(dest[0],dest[1],this.nextCommand.bind(this));
-            }
-
+            this.target.moveTo(dest[0],dest[1],this.nextCommand.bind(this));
             break;
         case 'say':
             this.ongoingCommand = true;
             hud.say(command.params[0], command.params[1],this.nextCommand.bind(this));
 
+            break;
+        case 'wait':
+            this.ongoingCommand = true;
             break;
     }
 };
