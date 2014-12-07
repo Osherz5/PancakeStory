@@ -202,7 +202,7 @@ HUD.prototype.getDecisionString = function(decisionObject) {
 
     // Convert the decisions object into a string
     Object.keys(decisionObject).forEach(function(decisionIndex) {
-        decisionString += decisionIndex + '. ' + decisionObject[decisionIndex] + '\n';
+        decisionString += (parseInt(decisionIndex)+1) + '. ' + decisionObject[decisionIndex] + '\n';
     });
 
     return decisionString;

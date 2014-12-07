@@ -1,10 +1,12 @@
 {
     "steps": [
-        {"action" : "move", "params" : [20, 30]},
-        {"action" : "move", "params" : [20, 40]},
-        {"action" : "wait", "params" : [3000]},
-        {"action" : "move", "params" : [40, 40]},
+
+        {"action" : "choice", "params" : ["do you love me?\n", "yes", "no"]},
+
         {"action" : "say", "params" : ["Noob", "Fuck you!\n"]},
-        {"action" : "move", "params" : [20, 50]}
+        {"action" : "move", "params" : [20, 50]},
+        {"action" : "gotoChoice", "params" : ["almostEnd",0]},
+        {"label" : "almostEnd"},
+        {"action" : "say", "params" : ["Fucker", "This is the end for you my friend\n"]}
     ]
 }

@@ -5,8 +5,8 @@ window.onload = function() {
     TheGame.extra1 = null;
     TheGame.keyboard = {};
     TheGame.hud = null;
-    TheGame.events = [];
-    TheGame.dummyEvent= null;
+    TheGame.events = null;
+    
 
     TheGame.isSwordDrawn = false;
 
@@ -52,10 +52,13 @@ TheGame.InGame.prototype = {
         this.game.time.advancedTiming = true;
         this.game.physics.startSystem(Phaser.Physics.P2JS);
 
+        TheGame.events = new EventManager();
+        TheGame.events.addEvent(this.game, 'dummyEvent');
         TheGame.hud = new HUD(this.game, 'hud');
         TheGame.hud.init();
         TheGame.hud.say('Bob', 'Hi there\nfellow dude.');
-        TheGame.hud.showDecision(
+
+        /*TheGame.hud.showDecision(
             'What is your favorite color?',
             {
                 1: 'blue',
@@ -79,7 +82,7 @@ TheGame.InGame.prototype = {
             }
         );
         TheGame.hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
-
+*/
 
         TheGame.hero = new Hero(this.game, 10, 10, '#00ff00');
         TheGame.extra1 = new Persona(this.game, 30, 30, 7, '#00ff00', true);
@@ -91,14 +94,14 @@ TheGame.InGame.prototype = {
                 }
             }, this);
         this.game.physics.p2.setImpactEvents(true);
-        TheGame.dummyEvent.runOn(TheGame.extra1);
+        TheGame.events.pool["dummyEvent"].runOn(TheGame.extra1);
     },
     update: function() {
         TheGame.hero.update();
         TheGame.hud.update();
-        TheGame.events.forEach(function (e) {
-            e.update();
-        });
+        Object.keys(TheGame.events.pool).forEach(function (name, index) {
+            TheGame.events.pool[name].update();
+        },TheGame.events.pool);
         TheGame.extra1.update();
 
         if (TheGame.keyboard.DRAW_SWORD.justUp) {

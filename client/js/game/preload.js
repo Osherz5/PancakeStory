@@ -28,8 +28,12 @@ TheGame.Preloader.prototype = {
 	    this.game.load.image('tile', 'assets/img/a.png');
 	    this.game.load.spritesheet('button', 'assets/buttons/play.png', 193, 71);
 	    this.game.add.text(0, 0, "fix", {font:"1px Munro", fill:"#FFFFFF"}); //hack to load font
-	    TheGame.dummyEvent = new ScriptedEvent(this.game, 'dummyEvent', 'assets/events/testscript.json');
-	    TheGame.events.push(TheGame.dummyEvent);
+
+            // events area
+            game.load.text('dummyEvent', 'assets/events/testscript.json');
+            
+            
+	    
 
 		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);
 		//	+ lots of other required assets here
