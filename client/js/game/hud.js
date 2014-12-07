@@ -55,18 +55,18 @@ var HUD = function (game, hudImage) {
 };
 
 HUD.prototype.init = function () {
-    keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
+    TheGame.keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
        TheGame.hud.showNextText();
     }, this);
 
     // Add option events
-    keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
+    TheGame.keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
         TheGame.hud.setAnswer(1);
     }, this);
-    keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
+    TheGame.keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
         TheGame.hud.setAnswer(2);
     }, this);
-    keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
+    TheGame.keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
         TheGame.hud.setAnswer(3);
     }, this);
 }

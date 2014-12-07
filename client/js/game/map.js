@@ -3,13 +3,15 @@ var Map = function(game, key, tileWidth, tileHeight, width, height) {
 
     this.addTilesetImage('tile');
 
-    var ground = this.createLayer('ground'); // This is layer index '0'
+    var ground = this.create('ground');
     ground.resizeWorld();
 
-    var buildings = this.createLayer('buildings'); // layer index 3
+    var buildings = this.createBlankLayer('buildings');
     this.setCollisionByExclusion([], true, buildings);
 
-    var trees = this.createLayer('trees'); // etc.
+    var trees = this.createBlankLayer('trees');
+
+    //this.setCollisionBetween(1, 12);
 };
 
 
