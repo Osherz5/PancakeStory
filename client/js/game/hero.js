@@ -1,12 +1,12 @@
-Hero = function (game, x, y) {
-    Persona.call(this, game, x, y, '#00BBBB', false);
+Hero = function (game, x, y) {   
+    Persona.call(this, game, x, y, 50, '#00BBBB', false);
     this.sprite.body.collideWorldBounds = true;
 };
 
 Hero.prototype = Object.create(Persona.prototype);
 
 Hero.prototype.update = function () {
-    var speed = 50;
+    var speed = this.speed;
     this.sprite.body.setZeroVelocity();
     if (keyboard.UP.isDown) {
         this.sprite.body.moveUp(speed);

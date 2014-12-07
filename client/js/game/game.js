@@ -63,7 +63,7 @@ function init() {
     hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 
     hero = new Hero(game, 10, 10, '#00ff00');
-    extra1 = new Persona(game, 30, 30, '#00ff00', true);
+    extra1 = new Persona(game, 30, 30, 7, '#00ff00', true);
     //var map = new Map(game);
     //this.game.world.addAt(hero, 2);
     hero.sprite.body.createBodyCallback(extra1.sprite, function (body) {
@@ -81,6 +81,7 @@ function update() {
     events.forEach(function (e) {
         e.update();
     });
+    extra1.update();
 
     if (keyboard.DRAW_SWORD.justUp) {
         isSwordDrawn = true;

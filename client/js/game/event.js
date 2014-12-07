@@ -9,6 +9,7 @@ ScriptedEvent.prototype.runOn = function (target) {
     this.commands = JSON.parse(game.cache.getText(this.name));
     this.currentCommandIndex = 0;
     this.waitOnUserInput = false;
+    this.ongoingCommand = false;
     console.log("event fired!");
 };
 
@@ -25,19 +26,19 @@ ScriptedEvent.prototype.update = function () {
     switch (command.action) {
         case 'move':
 
+            if (!this.ongoingCommand)
+                this.target.reachedDest = false;
+            
+            this.ongoingCommand = true;
             var dest = [command.params[0], command.params[1]];
             var speed = command.params[2];
 
-            // moves target towards destination
-            this.target.sprite.body.moveRight(speed * Math.sign(dest[0] - this.target.sprite.x));
-            this.target.sprite.body.moveDown(speed * Math.sign(dest[1] - this.target.sprite.y));
+            this.target.moveTo(dest[0],dest[1]);
 
-            // check if command ended
-            if (Math.round(this.target.sprite.x) === Math.round(dest[0])
-                && Math.round(this.target.sprite.y) === Math.round(dest[1])) {
-                //console.log("ended command");
-                this.target.sprite.body.setZeroVelocity();
+            if(this.target.reachedDest) {
+                this.ongoingCommand = false;
                 this.currentCommandIndex++;
+                console.log('next command');
             }
             break;
         case 'say':
