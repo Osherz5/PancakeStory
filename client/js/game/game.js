@@ -31,26 +31,11 @@ function init() {
         SHEATHE: game.input.keyboard.addKey(Phaser.Keyboard.TILDE)
     };
 
-    // Add tap event ona to show next dialog in hud
-    keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
-        hud.showNextText();
-    }, this);
-
-    // Add option events
-    keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
-        hud.setAnswer(1);
-    }, this);
-    keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
-        hud.setAnswer(2);
-    }, this);
-    keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
-        hud.setAnswer(3);
-    }, this);
-
     game.time.advancedTiming = true;
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     hud = new HUD(game, 'hud');
+    hud.init();
     hud.say('Bob', 'Hi there\nfellow dude.');
     hud.showDecision(
         'What is your favorite color?',
@@ -78,7 +63,7 @@ function init() {
     hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 
     hero = new Hero(game, 10, 10, '#00ff00');
-    extra1 = new Persona(game, 30, 30, '#00ff00', true);
+    extra1 = new Persona(game, 30, 30, 7, '#00ff00', true);
     //var map = new Map(game);
     //this.game.world.addAt(hero, 2);
     hero.sprite.body.createBodyCallback(extra1.sprite, function (body) {
@@ -96,6 +81,7 @@ function update() {
     events.forEach(function (e) {
         e.update();
     });
+    extra1.update();
 
     if (keyboard.DRAW_SWORD.justUp) {
         isSwordDrawn = true;
