@@ -1,7 +1,6 @@
 var TheGame = {};
 
 TheGame.Boot = function (game) {
-
 };
 
 TheGame.Boot.prototype = {
@@ -12,6 +11,20 @@ TheGame.Boot.prototype = {
 
         //  Phaser will automatically pause if the browser tab the game is in loses focus. You can disable that here:
         this.stage.disableVisibilityChange = true;
+
+        // Sound toggle
+        var soundToggle = document.querySelector('input.sound');
+        var soundEnabled = true;
+        if ('soundEnabled' in localStorage) {
+            soundEnabled = JSON.parse(localStorage.soundEnabled);
+        }
+        soundToggle.onchange = function() {
+            var soundEnabled = soundToggle.checked;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            TheGame.game.sound.mute = !soundEnabled;
+        };
+        soundToggle.checked = soundEnabled;
+        TheGame.game.sound.mute = !soundEnabled;
     },
 
     preload: function () {

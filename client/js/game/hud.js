@@ -5,8 +5,9 @@ var HUD = function (game, hudImage) {
     this.TITLE_START_Y = 417;
     this.CONTENT_START_X = 102;
     this.CONTENT_START_Y = 449;
-    this.SAY_SPEED_MS = 50;
+    this.SAY_SPEED_MS = 20;
     this.MAX_LINES_COUNT = 5;
+    this.MAX_ROW_LENGTH = 95;
     this.TITLE_SIZE = '24px';
     this.CONTENT_SIZE = '20px';
 
@@ -101,6 +102,8 @@ HUD.prototype.say = function (title, contentText, callback) {
 
 // Display text in hud 
 HUD.prototype.showText = function(newText) {
+    newText = this.wordWrap(newText, this.MAX_ROW_LENGTH, '-');
+
     // If the text has no lines at all
     // show it to the user
     if(newText.indexOf('\n') === -1) {
@@ -195,6 +198,10 @@ HUD.prototype.animateTheText = function (contentText) {
     setTimeout(function clearNextable() {
         this.nextable = true;
     }.bind(this), this.SAY_SPEED_MS * textLength);
+}
+
+HUD.prototype.wordWrap = function (text, maxLength, separator) {
+    return text.replace(new RegExp("(.{"+maxLength+"})", "g"), "$1"+separator+"\n")
 }
 
 HUD.prototype.getDecisionString = function(decisionObject) {

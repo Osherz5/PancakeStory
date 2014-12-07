@@ -3,6 +3,7 @@ TheGame.Preloader = function (game) {
 
 	this.background = null;
 	this.preloadBar = null;
+        this.sounds = ['intro', 'village', 'unknown'];
 
 	this.ready = false;
 
@@ -15,7 +16,7 @@ TheGame.Preloader.prototype = {
 		//	These are the assets we loaded in Boot.js
 		//	A nice sparkly background and a loading progress bar
 		this.background = this.add.sprite(0, 0, 'preloaderBackground');
-		this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
+		this.preloadBar = this.add.sprite(200, 400, 'preloaderBar');
 
 		//	This sets the preloadBar sprite as a loader sprite.
 		//	What that does is automatically crop the sprite from 0 to full-width
@@ -26,6 +27,7 @@ TheGame.Preloader.prototype = {
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
 		this.game.load.image('hud', 'assets/img/hud.png');
 	    this.game.load.image('tile', 'assets/img/a.png');
+		this.game.load.json('map', 'assets/maps/testing.json');
 	    this.game.load.spritesheet('button', 'assets/buttons/play.png', 193, 71);
 	    this.game.add.text(0, 0, "fix", {font:"1px Munro", fill:"#FFFFFF"}); //hack to load font
 
@@ -35,8 +37,9 @@ TheGame.Preloader.prototype = {
             
 	    
 
-		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);
-		//	+ lots of other required assets here
+            this.sounds.forEach(function(sound) {
+                this.load.audio(sound, ['assets/sounds/' + sound + '.mp3']);
+            }, this);
 	},
 
 	create: function () {
@@ -56,7 +59,10 @@ TheGame.Preloader.prototype = {
 		//	If you don't have any music in your game then put the game.state.start line into the create function and delete
 		//	the update function completely.
 		
-		if (/*this.cache.isSoundDecoded('titleMusic') && */ this.ready == false)
+                var soundsDecoded = this.sounds.every(function(sound) {
+                    return this.cache.isSoundDecoded(sound);
+                }, this);
+		if (soundsDecoded && this.ready == false)
 		{
 			this.ready = true;
 			this.state.start('MainMenu');

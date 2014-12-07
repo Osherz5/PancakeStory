@@ -49,6 +49,9 @@ TheGame.InGame.prototype = {
             SHEATHE: this.game.input.keyboard.addKey(Phaser.Keyboard.TILDE)
         };
 
+        this.music = this.add.audio('village');
+        this.music.play('', 0, 0.3);
+
         this.game.time.advancedTiming = true;
         this.game.physics.startSystem(Phaser.Physics.P2JS);
 
@@ -56,9 +59,9 @@ TheGame.InGame.prototype = {
         TheGame.events.addEvent(this.game, 'dummyEvent');
         TheGame.hud = new HUD(this.game, 'hud');
         TheGame.hud.init();
-        TheGame.hud.say('Bob', 'Hi there\nfellow dude.');
 
-        /*TheGame.hud.showDecision(
+        TheGame.hud.say('Bob', 'Hi there man, how are you? would you let me call you: "fellow dude"? Or is that considered something bad to do? Well honestly I really dont care so if you have a problem with that you should get out of here, DUDE. Anyhow, what are you goint to do in this game? will it be something cool like salying a dragon? Or will you try to fight crazy bandits? Nothing?! Really? why is that, there is soo much to do here! Pixelia is a great place to live in! Don\'t waste it in the Tavern like all of the lazy shits there, you\'ll be fat... Ok, good luck anyway!');
+       /* TheGame.hud.showDecision(
             'What is your favorite color?',
             {
                 1: 'blue',
@@ -84,10 +87,10 @@ TheGame.InGame.prototype = {
         TheGame.hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 */
 
+        this.game.add.sprite(0, 0, drawMap(this.game));
         TheGame.hero = new Hero(this.game, 10, 10, '#00ff00');
         TheGame.extra1 = new Persona(this.game, 30, 30, 7, '#00ff00', true);
-        //var map = new Map(this.game);
-        //this.this.game.world.addAt(hero, 2);
+
         TheGame.hero.sprite.body.createBodyCallback(TheGame.extra1.sprite, function (body) {
                 if (TheGame.isSwordDrawn) {
                     TheGame.extra1.kill();
