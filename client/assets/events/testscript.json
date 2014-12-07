@@ -2,11 +2,12 @@
     "steps": [
 
         {"action" : "choice", "params" : ["do you love me?\n", "yes", "no"]},
-
         {"action" : "say", "params" : ["Noob", "Fuck you!\n"]},
         {"action" : "move", "params" : [20, 50]},
         {"action" : "gotoChoice", "params" : ["almostEnd",0]},
         {"label" : "almostEnd"},
-        {"action" : "say", "params" : ["Fucker", "This is the end for you my friend\n"]}
+        {"action" : "say", "params" : ["Fucker", "This is the end for you my friend\n"]},
+        {"action" : "runFunc", "params" : ["moveTo","60","60","function(){}"]},
+        {"action" : "say", "params" : ["What is my name I don't even", "the end is nigh\n"]}
     ]
 }

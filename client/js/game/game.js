@@ -60,7 +60,7 @@ TheGame.InGame.prototype = {
         TheGame.hud = new HUD(this.game, 'hud');
         TheGame.hud.init();
 
-        TheGame.hud.say('Bob', 'Hi there man, how are you? would you let me call you: "fellow dude"? Or is that considered something bad to do? Well honestly I really dont care so if you have a problem with that you should get out of here, DUDE. Anyhow, what are you goint to do in this game? will it be something cool like salying a dragon? Or will you try to fight crazy bandits? Nothing?! Really? why is that, there is soo much to do here! Pixelia is a great place to live in! Don\'t waste it in the Tavern like all of the lazy shits there, you\'ll be fat... Ok, good luck anyway!');
+        //TheGame.hud.say('Bob', 'Hi there man, how are you? would you let me call you: "fellow dude"? Or is that considered something bad to do? Well honestly I really dont care so if you have a problem with that you should get out of here, DUDE. Anyhow, what are you goint to do in this game? will it be something cool like salying a dragon? Or will you try to fight crazy bandits? Nothing?! Really? why is that, there is soo much to do here! Pixelia is a great place to live in! Don\'t waste it in the Tavern like all of the lazy shits there, you\'ll be fat... Ok, good luck anyway!');
        /* TheGame.hud.showDecision(
             'What is your favorite color?',
             {
@@ -88,8 +88,8 @@ TheGame.InGame.prototype = {
 */
 
         this.game.add.sprite(0, 0, drawMap(this.game));
-        TheGame.hero = new Hero(this.game, 10, 10, '#00ff00');
-        TheGame.extra1 = new Persona(this.game, 30, 30, 7, '#00ff00', true);
+        TheGame.hero = new Hero(this.game, 10, 10);
+        TheGame.extra1 = new Persona(this.game, 30, 30, 7, '#00aa00', true);
 
         TheGame.hero.sprite.body.createBodyCallback(TheGame.extra1.sprite, function (body) {
                 if (TheGame.isSwordDrawn) {

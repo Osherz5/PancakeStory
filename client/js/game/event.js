@@ -72,6 +72,11 @@ ScriptedEvent.prototype.update = function () {
             this.nextCommand();
             this.currentCommandIndex--;
             break;
+        case 'runFunc':
+            var evalStr = "this.target."+command.params[0]+"("+command.params.slice(1).join(",")+");";
+            eval(evalStr);
+            this.nextCommand();
+            break;
 
     }
 };
