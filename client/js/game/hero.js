@@ -1,6 +1,5 @@
 Hero = function (game, x, y) {   
     Persona.call(this, game, x, y, 50, '#00BBBB', false);
-    this.sprite.body.collideWorldBounds = true;
 };
 
 Hero.prototype = Object.create(Persona.prototype);
@@ -8,16 +7,16 @@ Hero.prototype = Object.create(Persona.prototype);
 Hero.prototype.update = function () {
     var speed = this.speed;
     this.sprite.body.setZeroVelocity();
-    if (keyboard.UP.isDown) {
+    if (TheGame.keyboard.UP.isDown) {
         this.sprite.body.moveUp(speed);
     }
-    if (keyboard.DOWN.isDown) {
+    if (TheGame.keyboard.DOWN.isDown) {
         this.sprite.body.moveDown(speed);
     }
-    if (keyboard.RIGHT.isDown) {
+    if (TheGame.keyboard.RIGHT.isDown) {
         this.sprite.body.moveRight(speed);
     }
-    if (keyboard.LEFT.isDown) {
+    if (TheGame.keyboard.LEFT.isDown) {
         this.sprite.body.moveLeft(speed);
     }
 

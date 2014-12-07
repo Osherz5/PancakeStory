@@ -5,8 +5,9 @@ var HUD = function (game, hudImage) {
     this.TITLE_START_Y = 417;
     this.CONTENT_START_X = 102;
     this.CONTENT_START_Y = 449;
-    this.SAY_SPEED_MS = 50;
+    this.SAY_SPEED_MS = 20;
     this.MAX_LINES_COUNT = 5;
+    this.MAX_ROW_LENGTH = 95;
     this.TITLE_SIZE = '24px';
     this.CONTENT_SIZE = '20px';
 
@@ -55,19 +56,19 @@ var HUD = function (game, hudImage) {
 };
 
 HUD.prototype.init = function () {
-    keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
-       Game.hud.showNextText();
+    TheGame.keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
+       TheGame.hud.showNextText();
     }, this);
 
     // Add option events
-    keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
-        Game.hud.setAnswer(1);
+    TheGame.keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
+        TheGame.hud.setAnswer(1);
     }, this);
-    keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
-        Game.hud.setAnswer(2);
+    TheGame.keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
+        TheGame.hud.setAnswer(2);
     }, this);
-    keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
-        Game.hud.setAnswer(3);
+    TheGame.keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
+        TheGame.hud.setAnswer(3);
     }, this);
 }
 
@@ -101,6 +102,8 @@ HUD.prototype.say = function (title, contentText, callback) {
 
 // Display text in hud 
 HUD.prototype.showText = function(newText) {
+    newText = this.wordWrap(newText, this.MAX_ROW_LENGTH, '-');
+
     // If the text has no lines at all
     // show it to the user
     if(newText.indexOf('\n') === -1) {
@@ -185,7 +188,7 @@ HUD.prototype.animateTheText = function (contentText) {
     var charIndex = 0;
 
     // Repeat each new char every 80ms
-    Game.game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
+    TheGame.game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
         var newText = contentText.substring(0, ++charIndex);
         this.contentText.setText(newText)
     }, this);
@@ -197,12 +200,16 @@ HUD.prototype.animateTheText = function (contentText) {
     }.bind(this), this.SAY_SPEED_MS * textLength);
 }
 
+HUD.prototype.wordWrap = function (text, maxLength, separator) {
+    return text.replace(new RegExp("(.{"+maxLength+"})", "g"), "$1"+separator+"\n")
+}
+
 HUD.prototype.getDecisionString = function(decisionObject) {
     var decisionString = '';
 
     // Convert the decisions object into a string
     Object.keys(decisionObject).forEach(function(decisionIndex) {
-        decisionString += decisionIndex + '. ' + decisionObject[decisionIndex] + '\n';
+        decisionString += (parseInt(decisionIndex)+1) + '. ' + decisionObject[decisionIndex] + '\n';
     });
 
     return decisionString;

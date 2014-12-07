@@ -1,8 +1,30 @@
 {
     "steps": [
-        {"action" : "move", "params" : [20, 30, 5]},
-        {"action" : "move", "params" : [20, 40, 7]},
+
+        {"action" : "choice", "params" : ["do you love me?\n", "yes", "no","You're a nigger"]},
         {"action" : "say", "params" : ["Noob", "Fuck you!\n"]},
-        {"action" : "move", "params" : [20, 50, 7]}
+        {"action" : "move", "params" : [20, 50]},
+        {"action" : "gotoChoice", "params" : ["almostEnd","circle","offended"]},
+        {"label" : "almostEnd"},
+        {"action" : "say", "params" : ["Fucker", "This is the end for you my friend\n"]},
+        {"action" : "runFunc", "params" : ["moveTo","60","60","function(){}"]},
+        {"action" : "say", "params" : ["What is my name I don't even", "the end is nigh\n"]},
+        {"label" : "patrol"},
+        {"action" : "move", "params" : [10, 60]},
+        {"action" : "wait", "params" : [1500]},
+        {"action" : "move", "params" : [30, 60]},
+        {"action" : "wait", "params" : [1500]},
+        {"action" : "goto", "params" : ["patrol"]},
+        {"label" : "offended"},
+        {"action" : "say", "params" : ["Nigger", "Why is my name nigger? I am offended, please go away now :(\n"]},
+        {"action" : "goto", "params" : ["reallyEnd"]},
+        {"label" : "circle"},
+
+        {"action" : "move", "params" : [60, 60]},
+        {"action" : "move", "params" : [60, 70]},
+        {"action" : "move", "params" : [70, 70]},
+        {"action" : "move", "params" : [70, 60]},
+        {"action" : "goto", "params" : ["circle"]},
+        {"label" : "reallyEnd"}
     ]
 }
