@@ -33,14 +33,12 @@ TheGame.Preloader.prototype = {
 
 		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);
 		//	+ lots of other required assets here
-
 	},
 
 	create: function () {
 
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
 		this.preloadBar.cropEnabled = false;
-
 	},
 
 	update: function () {

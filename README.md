@@ -1,5 +1,5 @@
 # PancakeStory
-Fully featured Pixelated RPG, a story about love war and pancakes.
+Fully featured Pixelated RPG, a story about love, war and pancakes.
 
 ###Install
 - Open Cmd/Terminal
