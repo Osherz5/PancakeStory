@@ -84,10 +84,10 @@ TheGame.InGame.prototype = {
         TheGame.hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 
 
+        this.game.add.sprite(0, 0, drawMap(this.game));
         TheGame.hero = new Hero(this.game, 10, 10, '#00ff00');
         TheGame.extra1 = new Persona(this.game, 30, 30, 7, '#00ff00', true);
-        //var map = new Map(this.game);
-        //this.this.game.world.addAt(hero, 2);
+
         TheGame.hero.sprite.body.createBodyCallback(TheGame.extra1.sprite, function (body) {
                 if (TheGame.isSwordDrawn) {
                     TheGame.extra1.kill();

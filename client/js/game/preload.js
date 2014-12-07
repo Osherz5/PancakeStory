@@ -27,6 +27,7 @@ TheGame.Preloader.prototype = {
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
 		this.game.load.image('hud', 'assets/img/hud.png');
 	    this.game.load.image('tile', 'assets/img/a.png');
+		this.game.load.json('map', 'assets/maps/testing.json');
 	    this.game.load.spritesheet('button', 'assets/buttons/play.png', 193, 71);
 	    this.game.add.text(0, 0, "fix", {font:"1px Munro", fill:"#FFFFFF"}); //hack to load font
 	    TheGame.dummyEvent = new ScriptedEvent(this.game, 'dummyEvent', 'assets/events/testscript.json');

@@ -1,7 +1,7 @@
 (function() {
 var TILE_SIZE = 4;
-var MAP_ROWS = 250;
-var MAP_COLS = 93;
+var MAP_ROWS = 20;
+var MAP_COLS = 20;
 
 var tileTypes = [
     {name: 'Void',  color: 'black'}, // Tile Type #0
