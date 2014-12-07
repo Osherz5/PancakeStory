@@ -3,6 +3,6 @@
         {"action" : "move", "params" : [20, 30, 5]},
         {"action" : "move", "params" : [20, 40, 7]},
         {"action" : "say", "params" : ["Noob", "Fuck you!\n"]},
-        {"action" : "move", "params" : [20, 50, 1]}
+        {"action" : "move", "params" : [20, 50, 7]}
     ]
 }
