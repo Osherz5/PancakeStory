@@ -1,11 +1,11 @@
-Game.MainMenu = function (game) {
+TheGame.MainMenu = function (game) {
 
 	this.music = null;
 	this.playButton = null;
 
 };
 
-Game.MainMenu.prototype = {
+TheGame.MainMenu.prototype = {
 
 	create: function () {
 
@@ -34,7 +34,7 @@ Game.MainMenu.prototype = {
 		//this.music.stop();
 
 		//	And start the actual game
-		this.state.start('Game');
+		this.state.start('TheGame');
 
 	}
 

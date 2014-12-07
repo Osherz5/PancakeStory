@@ -1,10 +1,10 @@
-var Game = {};
+var TheGame = {};
 
-Game.Boot = function (game) {
+TheGame.Boot = function (game) {
 
 };
 
-Game.Boot.prototype = {
+TheGame.Boot.prototype = {
 
     init: function () {
 

@@ -56,18 +56,18 @@ var HUD = function (game, hudImage) {
 
 HUD.prototype.init = function () {
     keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
-       Game.hud.showNextText();
+       TheGame.hud.showNextText();
     }, this);
 
     // Add option events
     keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
-        Game.hud.setAnswer(1);
+        TheGame.hud.setAnswer(1);
     }, this);
     keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
-        Game.hud.setAnswer(2);
+        TheGame.hud.setAnswer(2);
     }, this);
     keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
-        Game.hud.setAnswer(3);
+        TheGame.hud.setAnswer(3);
     }, this);
 }
 
@@ -185,7 +185,7 @@ HUD.prototype.animateTheText = function (contentText) {
     var charIndex = 0;
 
     // Repeat each new char every 80ms
-    Game.game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
+    TheGame.game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
         var newText = contentText.substring(0, ++charIndex);
         this.contentText.setText(newText)
     }, this);
