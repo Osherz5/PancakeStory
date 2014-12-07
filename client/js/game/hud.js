@@ -17,7 +17,7 @@ var HUD = function (game, hudImage) {
     this.shouldBeClosed = true; // Decides if we should close the HUD
     this.canBeClosedByUser = true; // Decides if the user can start closing the HUD
     this.queue = []; // Holds dialogs that are waiting for the current dialog to end
-    
+
     // Currently saying
     this.sayingMode = false; // Checks if we are in saying mode
     this.sayCallback = null; // Used to tell if the user has read the dialog
@@ -54,6 +54,23 @@ var HUD = function (game, hudImage) {
     this.group.add(this.contentText);
 };
 
+HUD.prototype.init = function () {
+    keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
+        hud.showNextText();
+    }, this);
+
+    // Add option events
+    keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
+        hud.setAnswer(1);
+    }, this);
+    keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
+        hud.setAnswer(2);
+    }, this);
+    keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
+        hud.setAnswer(3);
+    }, this);
+}
+
 // Show a dialog in the hud
 HUD.prototype.say = function (title, saysWhat, callback) {
     if(this.curentlyDisplaying) {
@@ -83,18 +100,18 @@ HUD.prototype.showText = function(newText) {
         this.contentText.setText(newText);
         return;
     }
-    var lines = newText.split('\n');    
+    var lines = newText.split('\n');
     var textLineCount = lines.length;
     var currentText = newText;
     this.allText = newText;
     this.currentTextLine = 0;
-   
+
     // Show only the right amount of lines
     if(textLineCount > this.MAX_LINES_COUNT) {
         // Remove the overflowing lines
         lines.splice(this.MAX_LINES_COUNT, lines.length);
         currentText = lines.join('\n');
-        this.currentTextLine = this.MAX_LINES_COUNT; 
+        this.currentTextLine = this.MAX_LINES_COUNT;
     }
 
     if(textLineCount <= this.MAX_LINES_COUNT) {
@@ -107,7 +124,7 @@ HUD.prototype.showText = function(newText) {
 // If show text was too big for hud,
 // this function could show the next part of it.
 HUD.prototype.showNextText = function() {
-    var lines = this.allText.split('\n'); 
+    var lines = this.allText.split('\n');
     var currentText = "";
 
     // Check if we can apply this function
@@ -134,7 +151,7 @@ HUD.prototype.showNextText = function() {
             lines.splice(this.MAX_LINES_COUNT, lines.length);
             currentText = lines.join('\n');
 
-            this.currentTextLine += this.MAX_LINES_COUNT; 
+            this.currentTextLine += this.MAX_LINES_COUNT;
         } else {
             currentText = lines.join('\n');
             this.canBeClosedByUser = true;

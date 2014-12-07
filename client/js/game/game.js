@@ -31,26 +31,11 @@ function init() {
         SHEATHE: game.input.keyboard.addKey(Phaser.Keyboard.TILDE)
     };
 
-    // Add tap event ona to show next dialog in hud
-    keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
-        hud.showNextText();
-    }, this);
-
-    // Add option events
-    keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
-        hud.setAnswer(1);
-    }, this);
-    keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
-        hud.setAnswer(2);
-    }, this);
-    keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
-        hud.setAnswer(3);
-    }, this);
-
     game.time.advancedTiming = true;
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     hud = new HUD(game, 'hud');
+    hud.init();
     hud.say('Bob', 'Hi there\nfellow dude.');
     hud.showDecision(
         'What is your favorite color?',
