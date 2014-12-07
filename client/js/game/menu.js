@@ -14,7 +14,7 @@ TheGame.MainMenu.prototype = {
 		//	Naturally I expect you to do something significantly better :)
 
 		this.music = this.add.audio('intro');
-		this.music.play();
+		this.music.play('',0,1,true);
 
 		//this.add.sprite(0, 0, 'titlepage');
 		this.background = this.add.sprite(0, 0, 'preloaderBackground');

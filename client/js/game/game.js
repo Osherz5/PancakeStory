@@ -50,7 +50,7 @@ TheGame.InGame.prototype = {
         };
 
         this.music = this.add.audio('village');
-        this.music.play('', 0, 0.3);
+        this.music.play('', 0, 0.3, true);
 
         this.game.time.advancedTiming = true;
         this.game.physics.startSystem(Phaser.Physics.P2JS);
