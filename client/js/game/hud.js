@@ -41,7 +41,9 @@ var HUD = function (game, hudImage) {
     this.contentText = game.add.text(this.CONTENT_START_X, this.CONTENT_START_Y, "", {
         font: this.CONTENT_SIZE + " Munro",
         fill: "#000000",
-        align: "left"
+        align: "left",
+        wordWrap: true, 
+        wordWrapWidth: 520
     });
 
     this.img = game.add.sprite(this.BG_X, this.BG_Y, hudImage);

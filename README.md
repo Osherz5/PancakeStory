@@ -7,3 +7,6 @@ Fully featured Pixelated RPG, a story about love, war and pancakes.
 - ```python -m SimpleHTTPServer```
 
 Have fun
+
+For you devs out there:
+http://invrse.co/phaser-cheatsheet/

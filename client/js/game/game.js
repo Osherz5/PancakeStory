@@ -57,7 +57,7 @@ TheGame.InGame.prototype = {
 
         TheGame.hud = new HUD(this.game, 'hud');
         TheGame.hud.init();
-        TheGame.hud.say('Bob', 'Hi there\nfellow dude.');
+        TheGame.hud.say('Bob', 'Hi there man, how are you? would you let me call you:\n"fellow dude"?');
         TheGame.hud.showDecision(
             'What is your favorite color?',
             {
