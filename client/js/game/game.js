@@ -31,10 +31,13 @@ TheGame.InGame.prototype = {
 
 
     preload: function() {
+
        // Moved to preload.js
        console.log("yay all loaded");
     },
+
     create: function() {
+
         keyboard = {
             UP: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
             DOWN: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
@@ -93,7 +96,9 @@ TheGame.InGame.prototype = {
         this.game.physics.p2.setImpactEvents(true);
         TheGame.dummyEvent.runOn(TheGame.extra1);
     },
+
     update: function() {
+        
         TheGame.hero.update();
         TheGame.hud.update();
         TheGame.events.forEach(function (e) {
@@ -108,6 +113,7 @@ TheGame.InGame.prototype = {
             isSwordDrawn = false;
         }
     },
+
     render: function() {
 
     }
