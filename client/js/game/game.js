@@ -49,6 +49,9 @@ TheGame.InGame.prototype = {
             SHEATHE: this.game.input.keyboard.addKey(Phaser.Keyboard.TILDE)
         };
 
+        this.music = this.add.audio('village');
+        this.music.play('', 0, 0.3);
+
         this.game.time.advancedTiming = true;
         this.game.physics.startSystem(Phaser.Physics.P2JS);
 

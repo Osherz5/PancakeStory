@@ -3,6 +3,7 @@ TheGame.Preloader = function (game) {
 
 	this.background = null;
 	this.preloadBar = null;
+        this.sounds = ['intro', 'village', 'unknown'];
 
 	this.ready = false;
 
@@ -31,8 +32,9 @@ TheGame.Preloader.prototype = {
 	    TheGame.dummyEvent = new ScriptedEvent(this.game, 'dummyEvent', 'assets/events/testscript.json');
 	    TheGame.events.push(TheGame.dummyEvent);
 
-		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);
-		//	+ lots of other required assets here
+            this.sounds.forEach(function(sound) {
+                this.load.audio(sound, ['assets/sounds/' + sound + '.mp3']);
+            }, this);
 	},
 
 	create: function () {
@@ -52,7 +54,10 @@ TheGame.Preloader.prototype = {
 		//	If you don't have any music in your game then put the game.state.start line into the create function and delete
 		//	the update function completely.
 		
-		if (/*this.cache.isSoundDecoded('titleMusic') && */ this.ready == false)
+                var soundsDecoded = this.sounds.every(function(sound) {
+                    return this.cache.isSoundDecoded(sound);
+                }, this);
+		if (soundsDecoded && this.ready == false)
 		{
 			this.ready = true;
 			this.state.start('MainMenu');
