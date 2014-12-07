@@ -11,6 +11,7 @@ game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game', {
 function preload() {
     game.load.image('hud', 'assets/img/hud.png');
     game.load.image('tile', 'assets/img/a.png');
+    this.game.add.text(0, 0, "fix", {font:"1px Munro", fill:"#FFFFFF"}); //hack to load font
     dummyEvent = new ScriptedEvent(game, 'dummyEvent', 'assets/events/testscript.json');
     events.push(dummyEvent);
 }

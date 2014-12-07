@@ -7,8 +7,8 @@ var HUD = function (game, hudImage) {
     this.CONTENT_START_Y = 452;
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
-    this.TITLE_SIZE = '20px';
-    this.CONTENT_SIZE = '16px';
+    this.TITLE_SIZE = '24px';
+    this.CONTENT_SIZE = '20px';
 
     // General
     this.group = game.add.group();
@@ -33,13 +33,13 @@ var HUD = function (game, hudImage) {
     this.currentTextLine = 0; // Show text from this offset
 
     this.titleText = game.add.text(this.TITLE_START_X, this.TITLE_START_Y, "", {
-        font: this.TITLE_SIZE + " VT323",
+        font: this.TITLE_SIZE + " Munro",
         fill: "#000000",
         align: "left"
     });
 
     this.contentText = game.add.text(this.CONTENT_START_X, this.CONTENT_START_Y, "", {
-        font: this.CONTENT_SIZE + " VT323",
+        font: this.CONTENT_SIZE + " Munro",
         fill: "#000000",
         align: "left"
     });
@@ -55,11 +55,11 @@ var HUD = function (game, hudImage) {
 };
 
 // Show a dialog in the hud
-HUD.prototype.say = function (who, saysWhat, callback) {
+HUD.prototype.say = function (title, saysWhat, callback) {
     if(this.curentlyDisplaying) {
         this.queue.push({
             type: 'say',
-            who: who,
+            who: title,
             saysWhat: saysWhat,
             callback: callback
         });
@@ -73,7 +73,7 @@ HUD.prototype.say = function (who, saysWhat, callback) {
     this.img.reset(this.BG_X, this.BG_Y);
     this.sayCallback = callback;
 
-	this.titleText.setText(who);
+	this.titleText.setText(title);
     this.showText(saysWhat);
 }
 
@@ -149,14 +149,14 @@ HUD.prototype.showNextText = function() {
 }
 
 // Create a nice a nimation effect when saying stuff
-HUD.prototype.animateTheText = function (theText) {
+HUD.prototype.animateTheText = function (contentText) {
     this.nextable = false;
-    var textLength = theText.length + 1;
+    var textLength = contentText.length + 1;
     var charIndex = 0;
 
     // Repeat each new char every 80ms
     game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
-        var newText = theText.substring(0, ++charIndex);
+        var newText = contentText.substring(0, ++charIndex);
         this.contentText.setText(newText)
     }, this);
 
@@ -213,6 +213,7 @@ HUD.prototype.setAnswer = function(answerIndex) {
 HUD.prototype.update = function () {
     if (this.shouldBeClosed && this.curentlyDisplaying === true) {
         // Move the hud down
+        this.resetText();
         if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
         } else if (this.curentlyDisplaying) {
@@ -220,10 +221,6 @@ HUD.prototype.update = function () {
             this.curentlyDisplaying = false;
             if(this.queue.length > 0) {
                 var next = this.queue.shift();
-                this.titleText.setText("");
-                this.contentText.setText("");
-                this.currentTextLine = 0;
-                this.allText = "";
                 if(next.type === 'say') {
                     this.say(next.who, next.saysWhat, next.callback);
                 } else {
@@ -235,6 +232,13 @@ HUD.prototype.update = function () {
             }
         }
     }
+}
+
+HUD.prototype.resetText = function() {
+    this.allText = "";
+    this.titleText.setText("");
+    this.contentText.setText("");
+    this.currentTextLine = 0;
 }
 
 
@@ -250,8 +254,5 @@ HUD.prototype.resetProps = function() {
     this.answerCallback = null;
     this.sayCallback = null;
     this.nextable = false;
-    this.currentTextLine = 0;
-    this.allText = "";
-    this.titleText.setText("");
-    this.contentText.setText("");
+    this.resetText();
 }
