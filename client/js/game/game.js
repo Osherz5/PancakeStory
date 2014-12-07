@@ -1,96 +1,113 @@
-var hero, game, extra1, keyboard = {}, hud, events = [], dummyEvent;
-var isSwordDrawn = false;
 
-game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game', {
-    preload: preload,
-    create: init,
-    update: update,
-    render: render
-});
+window.onload = function() {
 
-function preload() {
-    game.load.image('hud', 'assets/img/hud.png');
-    game.load.image('tile', 'assets/img/a.png');
-    this.game.add.text(0, 0, "fix", {font:"1px Munro", fill:"#FFFFFF"}); //hack to load font
-    dummyEvent = new ScriptedEvent(game, 'dummyEvent', 'assets/events/testscript.json');
-    events.push(dummyEvent);
-}
+    Game.hero = null;
+    Game.extra1 = null;
+    Game.keyboard = {};
+    Game.hud = null;
+    Game.events = []; 
+    Game.dummyEvent= null;
 
-function init() {
-    keyboard = {
-        UP: game.input.keyboard.addKey(Phaser.Keyboard.UP),
-        DOWN: game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-        LEFT: game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-        RIGHT: game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-        INTERACT: game.input.keyboard.addKey(Phaser.Keyboard.I),
-        NEXTDIALOG: game.input.keyboard.addKey(Phaser.Keyboard.A),
-        DIAGOPTION1: game.input.keyboard.addKey(Phaser.Keyboard.ONE),
-        DIAGOPTION2: game.input.keyboard.addKey(Phaser.Keyboard.TWO),
-        DIAGOPTION3: game.input.keyboard.addKey(Phaser.Keyboard.THREE),
-        DRAW_SWORD: game.input.keyboard.addKey(Phaser.Keyboard.S),
-        SHEATHE: game.input.keyboard.addKey(Phaser.Keyboard.TILDE)
-    };
+    Game.isSwordDrawn = false;
 
-    game.time.advancedTiming = true;
-    game.physics.startSystem(Phaser.Physics.P2JS);
+    game = new Phaser.Game(1000, 600, Phaser.AUTO, 'gameContainer');
+    Game.game = game; // fix for HUD
+    
+    //  Add the States your game has.
+    //  You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
+    game.state.add('Boot', Game.Boot);
+    game.state.add('Preloader', Game.Preloader);
+    game.state.add('MainMenu', Game.MainMenu);
+    game.state.add('Game', Game.InGame);
+    //  Now start the Boot state.
+    game.state.start('Boot');
+};
 
-    hud = new HUD(game, 'hud');
-    hud.init();
-    hud.say('Bob', 'Hi there\nfellow dude.');
-    hud.showDecision(
-        'What is your favorite color?',
-        {
-            1: 'blue',
-            2: 'red',
-            3: 'green'
-        },
-        function (index, answer) {
-            console.log('You chose: ' + index + '. ' + answer);
-        }
-    );
+Game.InGame = function() {
 
-    hud.showDecision(
-        'Are you a:',
-        {
-            1: 'cat person',
-            2: 'dog person',
-            3: 'platipus person'
-        },
-        function (index, answer) {
-            console.log('You chose: ' + index + '. ' + answer);
-        }
-    );
-    hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
+};
 
-    hero = new Hero(game, 10, 10, '#00ff00');
-    extra1 = new Persona(game, 30, 30, 7, '#00ff00', true);
-    //var map = new Map(game);
-    //this.game.world.addAt(hero, 2);
-    hero.sprite.body.createBodyCallback(extra1.sprite, function (body) {
-            if (isSwordDrawn) {
-                extra1.kill();
+Game.InGame.prototype = {
+
+
+    preload: function() {
+       // Moved to preload.js
+       console.log("yay all loaded");
+    },
+    create: function() {
+        keyboard = {
+            UP: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+            DOWN: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+            LEFT: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+            RIGHT: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+            INTERACT: this.game.input.keyboard.addKey(Phaser.Keyboard.I),
+            NEXTDIALOG: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
+            DIAGOPTION1: this.game.input.keyboard.addKey(Phaser.Keyboard.ONE),
+            DIAGOPTION2: this.game.input.keyboard.addKey(Phaser.Keyboard.TWO),
+            DIAGOPTION3: this.game.input.keyboard.addKey(Phaser.Keyboard.THREE),
+            DRAW_SWORD: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
+            SHEATHE: this.game.input.keyboard.addKey(Phaser.Keyboard.TILDE)
+        };
+
+        this.game.time.advancedTiming = true;
+        this.game.physics.startSystem(Phaser.Physics.P2JS);
+
+        Game.hud = new HUD(this.game, 'hud');
+        Game.hud.init();
+        Game.hud.say('Bob', 'Hi there\nfellow dude.');
+        Game.hud.showDecision(
+            'What is your favorite color?',
+            {
+                1: 'blue',
+                2: 'red',
+                3: 'green'
+            },
+            function (index, answer) {
+                console.log('You chose: ' + index + '. ' + answer);
             }
-        }, this);
-    game.physics.p2.setImpactEvents(true);
-    dummyEvent.runOn(extra1);
-}
+        );
 
-function update() {
-    hero.update();
-    hud.update();
-    events.forEach(function (e) {
-        e.update();
-    });
-    extra1.update();
+        Game.hud.showDecision(
+            'Are you a:',
+            {
+                1: 'cat person',
+                2: 'dog person',
+                3: 'platipus person'
+            },
+            function (index, answer) {
+                console.log('You chose: ' + index + '. ' + answer);
+            }
+        );
+        Game.hud.say('Bob', 'Ok\nHA\nHA\nHA\n...\nHAHAHA\nOK I am done playing with you.');
 
-    if (keyboard.DRAW_SWORD.justUp) {
-        isSwordDrawn = true;
+        Game.hero = new Hero(this.game, 10, 10, '#00ff00');
+        Game.extra1 = new Persona(this.game, 30, 30, 7, '#00ff00', true);
+        //var map = new Map(this.game);
+        //this.this.game.world.addAt(hero, 2);
+        Game.hero.sprite.body.createBodyCallback(Game.extra1.sprite, function (body) {
+                if (Game.isSwordDrawn) {
+                    Game.extra1.kill();
+                }
+            }, this);
+        this.game.physics.p2.setImpactEvents(true);
+        Game.dummyEvent.runOn(Game.extra1);
+    },
+    update: function() {
+        Game.hero.update();
+        Game.hud.update();
+        Game.events.forEach(function (e) {
+            e.update();
+        });
+        Game.extra1.update();
+
+        if (keyboard.DRAW_SWORD.justUp) {
+            isSwordDrawn = true;
+        }
+        if (keyboard.SHEATHE.justUp) {
+            isSwordDrawn = false;
+        }
+    },
+    render: function() {
+
     }
-    if (keyboard.SHEATHE.justUp) {
-        isSwordDrawn = false;
-    }
-}
-
-function render() {
-
-}
+};

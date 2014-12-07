@@ -43,7 +43,7 @@ ScriptedEvent.prototype.update = function () {
             break;
         case 'say':
             this.waitOnUserInput = true;
-            hud.say(command.params[0], command.params[1], function sayCallback() {
+            Game.hud.say(command.params[0], command.params[1], function sayCallback() {
                 this.currentCommandIndex++;
                 this.waitOnUserInput = false;
             });
