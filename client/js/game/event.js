@@ -16,6 +16,7 @@ ScriptedEvent.prototype.runOn = function(target) {
 
 ScriptedEvent.prototype.update = function() {
     if (typeof this.currentCommandIndex == 'undefined' 
+        || this.target.sprite.body == null
         || this.currentCommandIndex > this.commands.steps.length 
         || this.waitOnUserInput) {
         return;
