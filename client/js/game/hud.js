@@ -55,30 +55,37 @@ var HUD = function (game, hudImage) {
 };
 
 // Show a dialog in the hud
-HUD.prototype.say = function (title, saysWhat, callback) {
+HUD.prototype.say = function (title, contentText, callback) {
+    // Add to queue if we are already displaying something
     if(this.curentlyDisplaying) {
         this.queue.push({
             type: 'say',
-            who: title,
-            saysWhat: saysWhat,
+            title: title,
+            contentText: contentText,
             callback: callback
         });
         return;
     }
+
+    // Initialize the flags
     this.curentlyDisplaying = true;
     this.canBeClosedByUser = false;
     this.shouldBeClosed = false;
     this.sayingMode = true;
     this.decisionMode = false;
-    this.img.reset(this.BG_X, this.BG_Y);
     this.sayCallback = callback;
 
+    // Reset the background position
+    this.img.reset(this.BG_X, this.BG_Y);
+
 	this.titleText.setText(title);
-    this.showText(saysWhat);
+    this.showText(contentText);
 }
 
 // Display text in hud 
 HUD.prototype.showText = function(newText) {
+    // If the text has no lines at all
+    // show it to the user
     if(newText.indexOf('\n') === -1) {
         this.contentText.setText(newText);
         return;
@@ -97,6 +104,8 @@ HUD.prototype.showText = function(newText) {
         this.currentTextLine = this.MAX_LINES_COUNT; 
     }
 
+    // Give the user the ability to close the hud
+    // if the text line count is less than the max line count
     if(textLineCount <= this.MAX_LINES_COUNT) {
         this.canBeClosedByUser = true;
     }
@@ -110,7 +119,7 @@ HUD.prototype.showNextText = function() {
     var lines = this.allText.split('\n'); 
     var currentText = "";
 
-    // Check if we can apply this function
+    // Check if we can apply this function right now
     if(!this.nextable) {
         return;
     }
@@ -128,6 +137,7 @@ HUD.prototype.showNextText = function() {
         return;
     }
 
+    //Split the text if it has too many lines
     if(this.currentTextLine > 0) {
         lines.splice(0, this.currentTextLine);
         if(lines.length > this.MAX_LINES_COUNT) {
@@ -140,6 +150,9 @@ HUD.prototype.showNextText = function() {
             this.canBeClosedByUser = true;
         }
     }
+
+    // If we get stuck with no text to display
+    // let the user the ability to close it and show "..."
     if(currentText === "") {
         this.canBeClosedByUser = true;
         currentText = "...";
@@ -179,6 +192,8 @@ HUD.prototype.getDecisionString = function(decisionObject) {
 }
 
 HUD.prototype.showDecision = function(question, decisions, answerCallback) {
+    // Add new decision to queue if
+    // we are already displaying something
     if(this.curentlyDisplaying) {
         this.queue.push({
             type: 'decision',
@@ -188,6 +203,8 @@ HUD.prototype.showDecision = function(question, decisions, answerCallback) {
         });
         return;
     }
+
+    // Initialize the flags
     this.decisionMode = true;
     this.curentlyDisplaying = true;
     this.sayingMode = false;
@@ -202,6 +219,7 @@ HUD.prototype.showDecision = function(question, decisions, answerCallback) {
 
 // Used when an answer was chosen
 HUD.prototype.setAnswer = function(answerIndex) {
+    // Check if the user can decide yet
     if(this.decisionMode && this.nextable) {
         this.decisionMode = false;
         this.answerCallback(answerIndex, this.currentDecisions[answerIndex]);
@@ -211,18 +229,25 @@ HUD.prototype.setAnswer = function(answerIndex) {
 }
 
 HUD.prototype.update = function () {
+
+    // Check if we need to close the HUD
     if (this.shouldBeClosed && this.curentlyDisplaying === true) {
+
         // Move the hud down
         this.resetText();
+
+        // Check if we still need to move it down
         if (this.img.body.y <= this.game.height) {
             this.img.body.velocity.y += 50;
+
         } else if (this.curentlyDisplaying) {
             // Dispatch queue dialogs
             this.curentlyDisplaying = false;
             if(this.queue.length > 0) {
+
                 var next = this.queue.shift();
                 if(next.type === 'say') {
-                    this.say(next.who, next.saysWhat, next.callback);
+                    this.say(next.title, next.contentText, next.callback);
                 } else {
                     this.showDecision(next.question, next.decisions, next.callback);
                 }
@@ -234,6 +259,7 @@ HUD.prototype.update = function () {
     }
 }
 
+// Partial reset, only clear the texts
 HUD.prototype.resetText = function() {
     this.allText = "";
     this.titleText.setText("");
