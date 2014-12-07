@@ -35,7 +35,7 @@ ScriptedEvent.prototype.update = function () {
             break;
         case 'say':
             this.ongoingCommand = true;
-            hud.say(command.params[0], command.params[1],this.nextCommand.bind(this));
+            Game.hud.say(command.params[0], command.params[1],this.nextCommand.bind(this));
 
             break;
         case 'wait':
