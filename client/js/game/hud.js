@@ -1,10 +1,10 @@
 var HUD = function (game, hudImage) {
     this.BG_X = 0;
     this.BG_Y = 375;
-    this.TITLE_START_X = 85;
-    this.TITLE_START_Y = 420;
-    this.CONTENT_START_X = 90;
-    this.CONTENT_START_Y = 452;
+    this.TITLE_START_X = 99;
+    this.TITLE_START_Y = 417;
+    this.CONTENT_START_X = 102;
+    this.CONTENT_START_Y = 449;
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
     this.TITLE_SIZE = '24px';
