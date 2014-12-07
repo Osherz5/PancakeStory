@@ -25,15 +25,15 @@ ScriptedEvent.prototype.update = function () {
 
     switch (command.action) {
         case 'move':
-
-            if (!this.ongoingCommand)
-                this.target.reachedDest = false;
             
-            this.ongoingCommand = true;
             var dest = [command.params[0], command.params[1]];
             var speed = command.params[2];
 
-            this.target.moveTo(dest[0],dest[1]);
+            if (!this.ongoingCommand)
+                this.target.moveTo(dest[0],dest[1]);
+            
+            this.ongoingCommand = true;
+
 
             if(this.target.reachedDest) {
                 this.ongoingCommand = false;

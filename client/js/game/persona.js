@@ -26,15 +26,15 @@ Persona.prototype.kill = function () {
 };
 
 Persona.prototype.update = function(){
+    // update movement
     if(!this.reachedDest) {
          // move X
          this.sprite.body.moveRight(this.speed * Math.sign(this.dest[0] - this.sprite.x));
          // move Y
          this.sprite.body.moveDown(this.speed * Math.sign(this.dest[1] - this.sprite.y));
-         // check if command ended
+         // check if movement ended
          if (Math.round(this.sprite.x) === Math.round(this.dest[0])
             && Math.round(this.sprite.y) === Math.round(this.dest[1])) {
-            //console.log("ended command");
                 this.sprite.body.setZeroVelocity();
                 this.reachedDest = true;
          }
@@ -44,4 +44,5 @@ Persona.prototype.update = function(){
 Persona.prototype.moveTo = function(x, y){
     // set destination
     this.dest = [x, y];
+    this.reachedDest = false;
 };
