@@ -17,6 +17,7 @@ TheGame.MainMenu.prototype = {
 		//this.music.play();
 
 		//this.add.sprite(0, 0, 'titlepage');
+		this.background = this.add.sprite(0, 0, 'preloaderBackground');
 		this.playButton = this.add.button(game.world.centerX - 95, 400, 'button', this.startGame, this, 2, 1, 0);
 	},
 
