@@ -1,9 +1,9 @@
-Persona = function (game, x, y, color, isStatic) {
+Persona = function (game, x, y, color, isKinematic) {
     this.game = game;
     var bitmap = this._constructBitdataRectangle(4, 4, color, game);
 
     PixelEntity.call(this, game, x, y, bitmap);
-    this.sprite.body.static = isStatic;
+    this.sprite.body.kinematic = isKinematic;
     this.sprite.body.fixedRotation = true;
 };
 
