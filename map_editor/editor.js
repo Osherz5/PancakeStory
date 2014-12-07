@@ -1,7 +1,7 @@
 (function() {
-var MAP_ROWS = 20;
-var MAP_COLS = 20;
-var TILE_SIZE = 15;
+var MAP_ROWS = 600;
+var MAP_COLS = 1000;
+var TILE_SIZE = 4;
 
 var tiles = [];
 window.tiles = tiles;

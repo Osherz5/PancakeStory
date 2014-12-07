@@ -1,14 +1,14 @@
 var HUD = function (game, hudImage) {
     this.BG_X = 0;
     this.BG_Y = 375;
-    this.TITLE_START_X = 85;
-    this.TITLE_START_Y = 420;
-    this.CONTENT_START_X = 90;
-    this.CONTENT_START_Y = 442;
+    this.TITLE_START_X = 99;
+    this.TITLE_START_Y = 417;
+    this.CONTENT_START_X = 102;
+    this.CONTENT_START_Y = 449;
     this.SAY_SPEED_MS = 50;
     this.MAX_LINES_COUNT = 5;
-    this.TITLE_SIZE = "20px";
-    this.CONTENT_SIZE = "16px";
+    this.TITLE_SIZE = '24px';
+    this.CONTENT_SIZE = '20px';
 
     // General
     this.group = game.add.group();
@@ -17,7 +17,7 @@ var HUD = function (game, hudImage) {
     this.shouldBeClosed = true; // Decides if we should close the HUD
     this.canBeClosedByUser = true; // Decides if the user can start closing the HUD
     this.queue = []; // Holds dialogs that are waiting for the current dialog to end
-    
+
     // Currently saying
     this.sayingMode = false; // Checks if we are in saying mode
     this.sayCallback = null; // Used to tell if the user has read the dialog
@@ -33,13 +33,13 @@ var HUD = function (game, hudImage) {
     this.currentTextLine = 0; // Show text from this offset
 
     this.titleText = game.add.text(this.TITLE_START_X, this.TITLE_START_Y, "", {
-        font: this.TITLE_SIZE + " Arial",
+        font: this.TITLE_SIZE + " Munro",
         fill: "#000000",
         align: "left"
     });
 
     this.contentText = game.add.text(this.CONTENT_START_X, this.CONTENT_START_Y, "", {
-        font: this.CONTENT_SIZE + " Arial",
+        font: this.CONTENT_SIZE + " Munro",
         fill: "#000000",
         align: "left"
     });
@@ -54,12 +54,29 @@ var HUD = function (game, hudImage) {
     this.group.add(this.contentText);
 };
 
+HUD.prototype.init = function () {
+    keyboard.NEXTDIALOG.onUp.add(function nextDialog() {
+        hud.showNextText();
+    }, this);
+
+    // Add option events
+    keyboard.DIAGOPTION1.onUp.add(function dialogOptionOne() {
+        hud.setAnswer(1);
+    }, this);
+    keyboard.DIAGOPTION2.onUp.add(function dialogOptionTwo() {
+        hud.setAnswer(2);
+    }, this);
+    keyboard.DIAGOPTION3.onUp.add(function dialogOptionThree() {
+        hud.setAnswer(3);
+    }, this);
+}
+
 // Show a dialog in the hud
-HUD.prototype.say = function (who, saysWhat, callback) {
+HUD.prototype.say = function (title, saysWhat, callback) {
     if(this.curentlyDisplaying) {
         this.queue.push({
             type: 'say',
-            who: who,
+            who: title,
             saysWhat: saysWhat,
             callback: callback
         });
@@ -73,7 +90,7 @@ HUD.prototype.say = function (who, saysWhat, callback) {
     this.img.reset(this.BG_X, this.BG_Y);
     this.sayCallback = callback;
 
-	this.titleText.setText(who);
+	this.titleText.setText(title);
     this.showText(saysWhat);
 }
 
@@ -83,18 +100,18 @@ HUD.prototype.showText = function(newText) {
         this.contentText.setText(newText);
         return;
     }
-    var lines = newText.split('\n');    
+    var lines = newText.split('\n');
     var textLineCount = lines.length;
     var currentText = newText;
     this.allText = newText;
     this.currentTextLine = 0;
-   
+
     // Show only the right amount of lines
     if(textLineCount > this.MAX_LINES_COUNT) {
         // Remove the overflowing lines
         lines.splice(this.MAX_LINES_COUNT, lines.length);
         currentText = lines.join('\n');
-        this.currentTextLine = this.MAX_LINES_COUNT; 
+        this.currentTextLine = this.MAX_LINES_COUNT;
     }
 
     if(textLineCount <= this.MAX_LINES_COUNT) {
@@ -107,7 +124,7 @@ HUD.prototype.showText = function(newText) {
 // If show text was too big for hud,
 // this function could show the next part of it.
 HUD.prototype.showNextText = function() {
-    var lines = this.allText.split('\n'); 
+    var lines = this.allText.split('\n');
     var currentText = "";
 
     // Check if we can apply this function
@@ -134,7 +151,7 @@ HUD.prototype.showNextText = function() {
             lines.splice(this.MAX_LINES_COUNT, lines.length);
             currentText = lines.join('\n');
 
-            this.currentTextLine += this.MAX_LINES_COUNT; 
+            this.currentTextLine += this.MAX_LINES_COUNT;
         } else {
             currentText = lines.join('\n');
             this.canBeClosedByUser = true;
@@ -149,14 +166,14 @@ HUD.prototype.showNextText = function() {
 }
 
 // Create a nice a nimation effect when saying stuff
-HUD.prototype.animateTheText = function (theText) {
+HUD.prototype.animateTheText = function (contentText) {
     this.nextable = false;
-    var textLength = theText.length + 1;
+    var textLength = contentText.length + 1;
     var charIndex = 0;
 
     // Repeat each new char every 80ms
     game.time.events.repeat(this.SAY_SPEED_MS, textLength, function () {
-        var newText = theText.substring(0, ++charIndex);
+        var newText = contentText.substring(0, ++charIndex);
         this.contentText.setText(newText)
     }, this);
 
@@ -221,8 +238,6 @@ HUD.prototype.update = function () {
             this.curentlyDisplaying = false;
             if(this.queue.length > 0) {
                 var next = this.queue.shift();
-                this.resetText();
-                this.allText = "";
                 if(next.type === 'say') {
                     this.say(next.who, next.saysWhat, next.callback);
                 } else {
@@ -236,13 +251,13 @@ HUD.prototype.update = function () {
     }
 }
 
-// Reset only the values
 HUD.prototype.resetText = function() {
+    this.allText = "";
     this.titleText.setText("");
     this.contentText.setText("");
     this.currentTextLine = 0;
-    this.allText = "";
 }
+
 
 // Reset all of the HUD's propertes
 HUD.prototype.resetProps = function() {
