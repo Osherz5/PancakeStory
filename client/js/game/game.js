@@ -90,18 +90,8 @@ TheGame.InGame.prototype = {
                     TheGame.extra1.kill();
                 }
             }, this);
-
-        //var map = new Map(TheGame.game);
-        TheGame.hero.sprite.body.createBodyCallback(TheGame.extra1, function (body) {
-            if (TheGame.isSwordDrawn) {
-                TheGame.extra1.kill();
-            }
-        }, this);
-        TheGame.game.physics.p2.setImpactEvents(true);
-
-
+        this.game.physics.p2.setImpactEvents(true);
         TheGame.dummyEvent.runOn(TheGame.extra1);
-        
     },
     update: function() {
         TheGame.hero.update();
@@ -118,6 +108,7 @@ TheGame.InGame.prototype = {
             TheGame.isSwordDrawn = false;
         }
     },
+
     render: function() {
 
     }

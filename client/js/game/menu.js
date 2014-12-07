@@ -17,15 +17,12 @@ TheGame.MainMenu.prototype = {
 		//this.music.play();
 
 		//this.add.sprite(0, 0, 'titlepage');
-		console.log("wegothere");
 		this.playButton = this.add.button(game.world.centerX - 95, 400, 'button', this.startGame, this, 2, 1, 0);
-
 	},
 
 	update: function () {
 
 		//	Do some nice funky main menu effect here
-
 	},
 
 	startGame: function (pointer) {
@@ -35,7 +32,5 @@ TheGame.MainMenu.prototype = {
 
 		//	And start the actual game
 		this.state.start('TheGame');
-
 	}
-
 };
