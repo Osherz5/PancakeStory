@@ -6,6 +6,7 @@ window.onload = function() {
     TheGame.keyboard = {};
     TheGame.hud = null;
     TheGame.events = null;
+    TheGame.gameItems = null;
     
 
     TheGame.isSwordDrawn = false;
@@ -59,6 +60,8 @@ TheGame.InGame.prototype = {
         TheGame.events.addEvent(this.game, 'dummyEvent');
         TheGame.hud = new HUD(this.game, 'hud');
         TheGame.hud.init();
+        
+        TheGame.gameItems = new GameItems();
 
         //TheGame.hud.say('Bob', 'Hi there man, how are you? would you let me call you: "fellow dude"? Or is that considered something bad to do? Well honestly I really dont care so if you have a problem with that you should get out of here, DUDE. Anyhow, what are you goint to do in this game? will it be something cool like salying a dragon? Or will you try to fight crazy bandits? Nothing?! Really? why is that, there is soo much to do here! Pixelia is a great place to live in! Don\'t waste it in the Tavern like all of the lazy shits there, you\'ll be fat... Ok, good luck anyway!');
        /* TheGame.hud.showDecision(
@@ -88,7 +91,10 @@ TheGame.InGame.prototype = {
 */
 
         this.game.add.sprite(0, 0, drawMap(this.game));
+
         TheGame.hero = new Hero(this.game, 10, 10);
+        TheGame.hero.inventory.push(TheGame.gameItems.getByName("Apple"));
+
         TheGame.extra1 = new Persona(this.game, 30, 30, 10, '#00aa00', true);
 
         TheGame.hero.sprite.body.createBodyCallback(TheGame.extra1.sprite, function (body) {

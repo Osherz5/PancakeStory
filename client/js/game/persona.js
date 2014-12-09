@@ -10,6 +10,9 @@ Persona = function (game, x, y, speed, color, isKinematic) {
     PixelEntity.call(this, game, x, y, bitmap);
     this.sprite.body.kinematic = isKinematic;
     this.sprite.body.fixedRotation = true;
+
+    // items the person carries
+    this.inventory = [];
 };
 
 Persona.prototype = Object.create(PixelEntity.prototype);
