@@ -47,7 +47,10 @@ TheGame.InGame.prototype = {
             DIAGOPTION2: this.game.input.keyboard.addKey(Phaser.Keyboard.TWO),
             DIAGOPTION3: this.game.input.keyboard.addKey(Phaser.Keyboard.THREE),
             DRAW_SWORD: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
-            SHEATHE: this.game.input.keyboard.addKey(Phaser.Keyboard.TILDE)
+            SHEATHE: this.game.input.keyboard.addKey(Phaser.Keyboard.TILDE),
+            INVENTORY_USE: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+            INVENTORY_SCROLL: this.game.input.keyboard.addKey(Phaser.Keyboard.Q)
+            
         };
 
         this.music = this.add.audio('village');
@@ -93,7 +96,12 @@ TheGame.InGame.prototype = {
         this.game.add.sprite(0, 0, drawMap(this.game));
 
         TheGame.hero = new Hero(this.game, 10, 10);
-        TheGame.hero.inventory.push(TheGame.gameItems.getByName("Apple"));
+        TheGame.hero.addToInv(TheGame.gameItems.getByName("Apple"));
+        TheGame.hero.addToInv(TheGame.gameItems.getByName("Health Potion"));
+        TheGame.hero.addToInv(TheGame.gameItems.getByName("Bible"));
+        TheGame.hero.addToInv(TheGame.gameItems.getByName("Apple"));
+
+        TheGame.selectedInventorySlot = 0;
 
         TheGame.extra1 = new Persona(this.game, 30, 30, 10, '#00aa00', true);
 
@@ -119,6 +127,29 @@ TheGame.InGame.prototype = {
         if (TheGame.keyboard.SHEATHE.justUp) {
             TheGame.isSwordDrawn = false;
         }
+
+        // inventory scroll 
+        if (TheGame.keyboard.INVENTORY_SCROLL.justUp && TheGame.hero.inventory.length > 0) {
+            TheGame.selectedInventorySlot++;
+            TheGame.selectedInventorySlot %= TheGame.hero.inventory.length;
+            console.log("selected inventory slot #"+TheGame.selectedInventorySlot);
+        }
+
+        // inventory on use
+        if (TheGame.keyboard.INVENTORY_USE.justUp && TheGame.hero.inventory.length > 0) {
+            toRemove = TheGame.hero.inventory[TheGame.selectedInventorySlot].use();
+            if (toRemove){
+                TheGame.hero.removeFromInv(TheGame.selectedInventorySlot);
+
+                // If last item in inventory is removed, move selected slot backwards
+                // Note that it will turn to -1 when inv is empty, indicating nothing is selected
+                if(TheGame.selectedInventorySlot == TheGame.hero.inventory.length) {
+                    TheGame.selectedInventorySlot--;
+                }
+            }
+            
+        }
+
     },
 
     render: function() {

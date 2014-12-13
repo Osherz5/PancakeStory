@@ -26,6 +26,8 @@ Persona.prototype._constructBitdataRectangle = function (height, width, color) {
 Persona.prototype.kill = function () {
     this.sprite.kill();
     this.sprite = this.game.add.sprite(this.sprite.x, this.sprite.y, this._constructBitdataRectangle(2, 8, '#ff0000'));
+
+    // drop items
 };
 
 Persona.prototype.update = function(){
@@ -54,3 +56,13 @@ Persona.prototype.moveTo = function(x, y, onReachCallback){
     this.reachedDest = false;
     this.onReachCallback = onReachCallback;
 };
+
+Persona.prototype.addToInv = function(gameItem) {
+    this.inventory.push(gameItem);
+}
+
+Persona.prototype.removeFromInv = function(index) {
+    this.inventory.splice(index,1);
+    
+}
+
